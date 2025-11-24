@@ -113,7 +113,7 @@ const SearchContainer = () => {
                 ref={inputRef}
                 value={keyword}
                 placeholder="🔍 2글자 이상 입력..."
-                className="border-none shadow-none w-[90%]"
+                className="border-none shadow-none w-[90%] rounded-full"
                 onChange={handleSearch}
               />
 
