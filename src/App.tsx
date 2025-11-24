@@ -4,6 +4,7 @@ import SearchContainer from "./components/feature/search/SearchContainer";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/ui/Header";
 import Footer from "./components/ui/Footer";
+import ToTopButton from "./components/ui/ToTopButton";
 
 export default function App() {
   return (
@@ -34,6 +35,8 @@ export default function App() {
       </main>
 
       <Footer />
+
+      <ToTopButton />
 
       {/* Vercel Analytics */}
       <Analytics />
