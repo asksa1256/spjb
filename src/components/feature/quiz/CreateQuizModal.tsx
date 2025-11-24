@@ -10,14 +10,19 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../ui/textarea";
-import CategorySelect from "../CategorySelect";
+import { Textarea } from "../../ui/textarea";
+import CategorySelect from "../search/CategorySelect";
 import { useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 import { sanitize } from "@/lib/sanitize";
 import { Plus } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const CreateQuizModal = () => {
   const [category, setCategory] = useState("");
@@ -54,7 +59,6 @@ const CreateQuizModal = () => {
 
       toast.success("문제가 성공적으로 추가되었습니다!");
 
-      // React Query 캐시 갱신
       queryClient.invalidateQueries({ queryKey: ["quiz", category] });
 
       setCategory("");
@@ -74,12 +78,21 @@ const CreateQuizModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" className="w-auto mx-auto">
-          <Plus className="-mr-1" />
-          문제 추가하기
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
+            >
+              <Plus className="-mr-1" />
+              문제 추가하기
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">찾는 문제가 없으셨나요?</TooltipContent>
+      </Tooltip>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mb-4">

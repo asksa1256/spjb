@@ -2,6 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/hooks/useDarkMode";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props {
   className?: string;
@@ -11,18 +16,20 @@ export default function DarkModeToggleButton({ className }: Props) {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <Button
-      type="button"
-      size="icon"
-      onClick={toggleTheme}
-      className={cn(
-        "relative transition-colors duration-300 bg-transparent text-foreground",
-        className
-      )}
-    >
-      {/* 라이트 모드 */}
-      <Sun
-        className={`
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          type="button"
+          size="icon"
+          onClick={toggleTheme}
+          className={cn(
+            "relative transition-colors duration-300 bg-transparent text-foreground",
+            className
+          )}
+        >
+          {/* 라이트 모드 */}
+          <Sun
+            className={`
           size-5 transition-all duration-300 
           ${
             theme === "dark"
@@ -30,11 +37,11 @@ export default function DarkModeToggleButton({ className }: Props) {
               : "rotate-0 scale-100 opacity-100"
           }
         `}
-      />
+          />
 
-      {/* 다크 모드 */}
-      <Moon
-        className={`
+          {/* 다크 모드 */}
+          <Moon
+            className={`
           absolute size-5 transition-all duration-300
           ${
             theme === "dark"
@@ -42,7 +49,12 @@ export default function DarkModeToggleButton({ className }: Props) {
               : "-rotate-90 scale-0 opacity-0"
           }
         `}
-      />
-    </Button>
+          />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>
+        {theme === "dark" ? "라이트" : "다크"} 모드
+      </TooltipContent>
+    </Tooltip>
   );
 }

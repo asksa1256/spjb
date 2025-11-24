@@ -1,13 +1,13 @@
 import { useState, useMemo, useRef, type ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CategorySelect from "@/components/CategorySelect";
+import CategorySelect from "@/components/feature/search/CategorySelect";
 import debounce from "@/lib/debounce";
-import SearchResults from "@/components/SearchResults";
+import SearchResults from "@/components/feature/search/SearchResults";
 import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import LoadingDots from "./ui/LoadingDots";
+import LoadingDots from "@/components/ui/LoadingDots";
 import { copyToClipboard } from "@/lib/copyToClipborad";
 import filterResults from "@/lib/filterResults";
 import getResults from "@/api/getResults";
@@ -99,42 +99,45 @@ const SearchContainer = () => {
 
   return (
     <section className="relative flex flex-col items-center w-full">
-      <div className="flex flex-col max-w-[320px] self-center">
-        <CategorySelect
-          id="category"
-          value={category || ""}
-          className="mb-2 w-full"
-          onChange={handleChangeCategory}
-        />
+      <div className="flex flex-col sm:w-[400px] sm:px-0 px-4 w-full self-center items-center">
+        <div className="rounded-full bg-background py-1.5 px-2 flex shadow-md w-full max-w-[400px]">
+          <CategorySelect
+            id="category"
+            value={category || ""}
+            onChange={handleChangeCategory}
+          />
 
-        <div className="flex flex-col gap-4 items-center">
-          <div className="flex gap-2">
-            <div>
+          <div className="flex flex-col gap-4 items-center">
+            <div className="flex gap-2">
               <Input
                 ref={inputRef}
                 value={keyword}
-                placeholder="🔎 2글자 이상 입력..."
+                placeholder="🔍 2글자 이상 입력..."
+                className="border-none shadow-none w-[90%] rounded-full"
                 onChange={handleSearch}
               />
+
               {debouncedKeyword.length >= 2 && (
-                <p className="text-gray-400 text-xs mt-1.5 ml-0.5 break-keep">
-                  <span className="bg-background mr-1 py-0.5 p-1 rounded-sm shadow-sm">
-                    esc
-                  </span>
-                  : 지우기
-                </p>
+                <Button onClick={clearSearch}>지우기</Button>
               )}
             </div>
-
-            <Button onClick={clearSearch}>지우기</Button>
           </div>
-
-          {category && loadingPercent < 100 && (
-            <p className="text-xs text-gray-400">
-              문제 불러오는 중{<LoadingDots loadingPercent={loadingPercent} />}
-            </p>
-          )}
         </div>
+
+        {debouncedKeyword.length >= 2 && (
+          <div className="text-gray-400 text-xs mt-1.5 ml-0.5 text-center">
+            <span className="bg-background mr-1 py-0.5 p-1 rounded-sm shadow-sm">
+              esc
+            </span>
+            : 지우기
+          </div>
+        )}
+
+        {category && loadingPercent < 100 && (
+          <p className="text-xs text-gray-400 mt-2">
+            문제 불러오는 중{<LoadingDots loadingPercent={loadingPercent} />}
+          </p>
+        )}
 
         <div className="mt-3 text-center mb-4 text-sm">
           {!category && <p className="text-blue-500">퀴즈를 선택해주세요.</p>}
