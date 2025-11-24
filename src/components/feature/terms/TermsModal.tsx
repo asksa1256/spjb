@@ -27,7 +27,7 @@ const TermsModal = () => {
           <DialogTitle>이용약관</DialogTitle>
         </DialogHeader>
 
-        <p className="break-keep text-center">
+        <p className="break-keep text-center text-foreground">
           심플족보는
           <br />
           <span className="text-blue-500">
