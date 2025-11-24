@@ -1,13 +1,13 @@
 import { useState, useMemo, useRef, type ChangeEvent, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import CategorySelect from "@/components/CategorySelect";
+import CategorySelect from "@/components/feature/search/CategorySelect";
 import debounce from "@/lib/debounce";
-import SearchResults from "@/components/SearchResults";
+import SearchResults from "@/components/feature/search/SearchResults";
 import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import LoadingDots from "./ui/LoadingDots";
+import LoadingDots from "@/components/ui/LoadingDots";
 import { copyToClipboard } from "@/lib/copyToClipborad";
 import filterResults from "@/lib/filterResults";
 import getResults from "@/api/getResults";

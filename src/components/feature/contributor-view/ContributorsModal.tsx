@@ -12,9 +12,9 @@ import {
 import { Heart } from "lucide-react";
 import supabase from "@/lib/supabase";
 import { useState } from "react";
-import ContributorList from "@/components/ContributorList";
+import ContributorList from "@/components/feature/contributor-view/ContributorList";
 import { useQuery } from "@tanstack/react-query";
-import CreateQuizModal from "./CreateQuizModal";
+import CreateQuizModal from "@/components/feature/quiz/CreateQuizModal";
 
 async function fetchContributors(): Promise<string[]> {
   const allNicknames: string[] = [];
@@ -48,8 +48,8 @@ const ContributorsModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-auto mx-auto">
-          <Heart className="-mr-0.5" /> Thanks to...
+        <Button variant="ghost" className="w-auto mx-auto text-foreground">
+          <Heart className="size-5!" />
         </Button>
       </DialogTrigger>
 

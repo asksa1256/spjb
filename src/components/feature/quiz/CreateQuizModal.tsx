@@ -10,8 +10,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "../ui/textarea";
-import CategorySelect from "../CategorySelect";
+import { Textarea } from "../../ui/textarea";
+import CategorySelect from "../search/CategorySelect";
 import { useState, type FormEvent } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";

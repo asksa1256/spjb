@@ -66,8 +66,8 @@ const CreateInquiryModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-auto mx-auto">
-          <BadgeQuestionMark className="-mr-0.5" /> 문의하기
+        <Button variant="ghost" className="w-auto mx-auto text-foreground">
+          <BadgeQuestionMark className="size-5!" />
         </Button>
       </DialogTrigger>
 
