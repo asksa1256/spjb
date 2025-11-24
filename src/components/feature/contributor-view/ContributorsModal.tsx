@@ -48,7 +48,11 @@ const ContributorsModal = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="w-auto mx-auto text-foreground">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-auto mx-auto text-foreground"
+        >
           <Heart className="size-5!" />
         </Button>
       </DialogTrigger>

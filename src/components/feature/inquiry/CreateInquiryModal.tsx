@@ -66,7 +66,11 @@ const CreateInquiryModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="w-auto mx-auto text-foreground">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="w-auto mx-auto text-foreground"
+        >
           <BadgeQuestionMark className="size-5!" />
         </Button>
       </DialogTrigger>

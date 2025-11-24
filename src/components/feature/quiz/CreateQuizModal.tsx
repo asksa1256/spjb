@@ -54,7 +54,6 @@ const CreateQuizModal = () => {
 
       toast.success("문제가 성공적으로 추가되었습니다!");
 
-      // React Query 캐시 갱신
       queryClient.invalidateQueries({ queryKey: ["quiz", category] });
 
       setCategory("");
@@ -75,7 +74,7 @@ const CreateQuizModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" className="w-auto mx-auto">
+        <Button variant="outline" size="lg" className="w-auto mx-auto">
           <Plus className="-mr-1" />
           문제 추가하기
         </Button>

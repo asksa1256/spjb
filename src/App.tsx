@@ -7,7 +7,7 @@ import Header from "@/components/ui/Header";
 export default function App() {
   return (
     <>
-      <main className="relative flex min-h-screen flex-col items-center justify-start md:px-6 pt-12 md:pt-14 pb-10 bg-background-secondary">
+      <main className="relative flex min-h-screen flex-col items-center justify-start md:px-6 pt-16 pb-10 bg-background-secondary">
         <Header />
 
         <section className="flex flex-col w-full items-center justify-start max-w-[640px]">
