@@ -13,7 +13,11 @@ const TermsModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="text-foreground/40">
+        <Button
+          variant="ghost"
+          className="text-foreground/40 text-xs"
+          size="sm"
+        >
           이용약관
         </Button>
       </DialogTrigger>

@@ -7,7 +7,7 @@ import Footer from "./components/ui/Footer";
 
 export default function App() {
   return (
-    <div className="relative flex flex-col items-center justify-start md:px-6 pt-16 pb-10 bg-background-secondary min-h-screen">
+    <div className="relative flex flex-col items-center justify-start md:px-6 pt-18 pb-10 bg-background-secondary min-h-screen">
       <Header />
 
       <main>

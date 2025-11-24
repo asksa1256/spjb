@@ -18,6 +18,12 @@ import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 import { sanitize } from "@/lib/sanitize";
 import { Plus } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const CreateQuizModal = () => {
   const [category, setCategory] = useState("");
@@ -73,12 +79,25 @@ const CreateQuizModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="lg" className="w-auto mx-auto">
-          <Plus className="-mr-1" />
-          문제 추가하기
-        </Button>
-      </DialogTrigger>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
+              >
+                <Plus className="-mr-1" />
+                문제 추가하기
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">
+            <p>찾는 문제가 없으셨나요?</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mb-4">
