@@ -112,15 +112,13 @@ const SearchContainer = () => {
               <Input
                 ref={inputRef}
                 value={keyword}
-                placeholder="2글자 이상 입력..."
+                placeholder="🔍 2글자 이상 입력..."
                 className="border-none shadow-none w-[90%]"
                 onChange={handleSearch}
               />
 
               {debouncedKeyword.length >= 2 && (
-                <Button className="px-4!" onClick={clearSearch}>
-                  지우기
-                </Button>
+                <Button onClick={clearSearch}>지우기</Button>
               )}
             </div>
           </div>
@@ -136,12 +134,12 @@ const SearchContainer = () => {
         )}
 
         {category && loadingPercent < 100 && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-400 mt-2">
             문제 불러오는 중{<LoadingDots loadingPercent={loadingPercent} />}
           </p>
         )}
 
-        <div className="mt-3 text-center mb-2 text-sm">
+        <div className="mt-3 text-center mb-4 text-sm">
           {!category && <p className="text-blue-500">퀴즈를 선택해주세요.</p>}
           {isSearching && <p className="text-blue-500">검색 중...</p>}
           {isEmpty && <p className="text-gray-500">검색 결과가 없습니다.</p>}
