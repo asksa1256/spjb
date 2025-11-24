@@ -25,7 +25,7 @@ const CategorySelect = ({
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger
         id={id}
-        className={`border-0 shadow-none min-w-[120px] ${className}`}
+        className={`border-0 shadow-none min-w-[120px] focus-visible:ring-0 ${className}`}
       >
         <SelectValue placeholder="퀴즈 선택" />
       </SelectTrigger>
