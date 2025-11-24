@@ -16,6 +16,11 @@ import supabase from "@/lib/supabase";
 import { sanitize } from "@/lib/sanitize";
 import { Input } from "@/components/ui/input";
 import { BadgeQuestionMark } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const CreateInquiryModal = () => {
   const [contact, setContact] = useState("");
@@ -65,27 +70,38 @@ const CreateInquiryModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-auto mx-auto text-foreground"
-        >
-          <BadgeQuestionMark className="size-5!" />
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-auto mx-auto text-foreground"
+            >
+              <BadgeQuestionMark className="size-5!" />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">문의하기</TooltipContent>
+      </Tooltip>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mb-4">
           <DialogTitle>문의하기</DialogTitle>
           <DialogDescription>
-            중복 문제, 틀린 답 제보, 기타 문의사항을 남겨주세요.
+            중복 문제, 틀린 답 제보, 기타 문의/건의 사항을 남겨주세요!
           </DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-8">
             <div className="grid gap-3">
+              <label
+                htmlFor="nickname"
+                className="text-sm text-foreground font-medium"
+              >
+                내용
+              </label>
               <Textarea
                 id="inquiry"
                 name="inquiry"

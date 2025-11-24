@@ -15,6 +15,11 @@ import { useState } from "react";
 import ContributorList from "@/components/feature/contributor-view/ContributorList";
 import { useQuery } from "@tanstack/react-query";
 import CreateQuizModal from "@/components/feature/quiz/CreateQuizModal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 async function fetchContributors(): Promise<string[]> {
   const allNicknames: string[] = [];
@@ -47,15 +52,20 @@ const ContributorsModal = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="w-auto mx-auto text-foreground"
-        >
-          <Heart className="size-5!" />
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="w-auto mx-auto text-foreground"
+            >
+              <Heart className="size-5!" />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>💙 Thanks to... 💙</TooltipContent>
+      </Tooltip>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
