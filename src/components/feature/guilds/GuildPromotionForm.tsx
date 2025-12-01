@@ -188,6 +188,10 @@ export default function GuildPromotionForm({
           )}
         </div>
 
+        <p className="text-foreground/50 text-sm">
+          * 홍보글 수정/삭제는 '문의하기'로 요청해주세요.
+        </p>
+
         <div className="flex justify-end gap-2">
           <Button disabled={guildMutation.isPending}>
             {guildMutation.isPending ? "등록 중..." : "등록하기"}
