@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import CreateInquiryModal from "@/components/feature/inquiry/CreateInquiryModal";
 import ContributorsModal from "@/components/feature/contributor-view/ContributorsModal";
 import DarkModeToggleButton from "@/components/feature/darkmode/DarkModeToggleButton";
+import GuildsModal from "../feature/guilds/GuildsModal";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -44,6 +45,7 @@ const Header = () => {
         <div className="flex">
           <CreateInquiryModal />
           <ContributorsModal />
+          <GuildsModal />
           <DarkModeToggleButton />
         </div>
       </div>
