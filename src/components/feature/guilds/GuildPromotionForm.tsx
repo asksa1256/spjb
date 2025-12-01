@@ -7,18 +7,16 @@ import { Button } from "@/components/ui/button";
 import { sanitize } from "@/lib/sanitize";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function GuildPromotionForm({
   onClose,
 }: {
   onClose: () => void;
 }) {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error";
-    message: string;
-  } | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -43,11 +41,9 @@ export default function GuildPromotionForm({
     }
   }, [imageFile]);
 
-  const onSubmit = async (data: GuildFormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus(null);
-
-    try {
+  // 길드 등록 뮤테이션
+  const guildMutation = useMutation({
+    mutationFn: async (data: GuildFormData) => {
       // 이미지 업로드
       const file = data.image[0];
       const fileExt = file.name.split(".").pop();
@@ -68,29 +64,36 @@ export default function GuildPromotionForm({
         .getPublicUrl(filePath);
 
       // 길드 저장
-      const { error } = await supabase.from("guilds").insert({
-        name: sanitize(data.name),
-        image: sanitize(urlData.publicUrl),
-        bio: sanitize(data.bio),
-      });
+      const { data: insertedData, error } = await supabase
+        .from("guilds")
+        .insert({
+          name: sanitize(data.name),
+          image: sanitize(urlData.publicUrl),
+          bio: sanitize(data.bio),
+        })
+        .select();
 
       if (error) throw error;
 
-      setSubmitStatus({
-        type: "success",
-        message: "길드 홍보글이 등록되었습니다!",
-      });
+      return insertedData;
+    },
+    onSuccess: () => {
+      // 성공 시 guilds 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ["guilds"] });
+
+      toast.success("길드 홍보글이 등록되었습니다!");
       reset();
       setPreviewImage(null);
-    } catch (error) {
+      onClose(); // 등록 성공 후 폼 닫기
+    },
+    onError: (error) => {
       console.error("Error:", error);
-      setSubmitStatus({
-        type: "error",
-        message: "등록 중 오류가 발생했습니다. 다시 시도해주세요.",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+      toast.error("에러가 발생했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  const onSubmit = async (data: GuildFormData) => {
+    guildMutation.mutate(data);
   };
 
   return (
@@ -172,21 +175,9 @@ export default function GuildPromotionForm({
           )}
         </div>
 
-        {submitStatus && (
-          <div
-            className={`p-4 rounded-lg ${
-              submitStatus.type === "success"
-                ? "bg-green-50 text-green-800 border border-green-200"
-                : "bg-red-50 text-red-800 border border-red-200"
-            }`}
-          >
-            {submitStatus.message}
-          </div>
-        )}
-
         <div className="flex justify-end gap-2">
-          <Button disabled={isSubmitting}>
-            {isSubmitting ? "등록 중..." : "등록하기"}
+          <Button disabled={guildMutation.isPending}>
+            {guildMutation.isPending ? "등록 중..." : "등록하기"}
           </Button>
           <Button
             type="button"

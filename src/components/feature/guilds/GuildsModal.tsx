@@ -89,14 +89,19 @@ const GuildsModal = () => {
         ) : (
           <div className="flex flex-col gap-4 pt-8">
             <p className="text-center text-muted-foreground text-sm">
-              👇 길드 홍보하기 👇
+              아직 등록된 길드가 없어요!
+              <br />
+              <span className="mt-2 block text-foreground">
+                👇 첫번째로 길드 홍보하기 👇
+              </span>
             </p>
             <GuildPromotionModal />
           </div>
         )}
 
         <DialogFooter className="mt-6">
-          <GuildPromotionModal />
+          {guilds && guilds.length > 0 && <GuildPromotionModal />}
+
           <DialogClose asChild>
             <Button variant="outline" className="!w-auto">
               닫기

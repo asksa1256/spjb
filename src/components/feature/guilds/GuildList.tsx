@@ -26,7 +26,7 @@ const GuildList = ({ guilds }: GuildListProps) => {
             <li key={guild.id} className="cursor-default">
               <div className="flex items-center gap-2 py-2">
                 <img
-                  src={guild.image ?? DefaultGuildIcon}
+                  src={guild.image || DefaultGuildIcon}
                   alt=""
                   className="inline-block size-5"
                 />
