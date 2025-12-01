@@ -44,6 +44,19 @@ export default function GuildPromotionForm({
   // 길드 등록 뮤테이션
   const guildMutation = useMutation({
     mutationFn: async (data: GuildFormData) => {
+      // 길드 중복 등록 체크
+      const { data: existingGuild } = await supabase
+        .from("guilds")
+        .select("name")
+        .eq("name", sanitize(data.name))
+        .single();
+
+      if (existingGuild) {
+        throw new Error(
+          "이미 홍보한 길드입니다. 홍보 메시지 수정이나 삭제는 관리자에게 문의해주세요!"
+        );
+      }
+
       // 이미지 업로드
       const file = data.image[0];
       const fileExt = file.name.split(".").pop();
