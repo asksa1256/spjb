@@ -44,6 +44,19 @@ export default function GuildPromotionForm({
   // 길드 등록 뮤테이션
   const guildMutation = useMutation({
     mutationFn: async (data: GuildFormData) => {
+      // 길드 중복 등록 체크
+      const { data: existingGuild } = await supabase
+        .from("guilds")
+        .select("name")
+        .eq("name", sanitize(data.name))
+        .single();
+
+      if (existingGuild) {
+        throw new Error(
+          "이미 홍보한 길드입니다. 홍보 메시지 수정이나 삭제는 관리자에게 문의해주세요!"
+        );
+      }
+
       // 이미지 업로드
       const file = data.image[0];
       const fileExt = file.name.split(".").pop();
@@ -88,7 +101,7 @@ export default function GuildPromotionForm({
     },
     onError: (error) => {
       console.error("Error:", error);
-      toast.error("에러가 발생했습니다. 다시 시도해주세요.");
+      toast.error(error.message || "에러가 발생했습니다. 다시 시도해주세요.");
     },
   });
 
@@ -118,13 +131,13 @@ export default function GuildPromotionForm({
           )}
         </div>
 
-        {/* 길드 아이콘 */}
+        {/* 길드 마크 */}
         <div>
           <label
             htmlFor="image"
             className="block text-sm font-semibold text-gray-700 mb-2"
           >
-            길드 아이콘 <span className="text-red-500">*</span>
+            길드 마크 <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-4">
             <div className="flex-1">
@@ -136,7 +149,7 @@ export default function GuildPromotionForm({
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-600 file:font-semibold hover:file:bg-blue-100 file:transition-colors text-foreground"
               />
               <p className="mt-2 text-xs text-gray-500">
-                * 확장자: JPG, PNG, WEBP (최대 40KB, 24*24 사이즈)
+                * 최대 40KB, 권장 사이즈 64*64(px)
               </p>
             </div>
             {previewImage && (
@@ -174,6 +187,10 @@ export default function GuildPromotionForm({
             <p className="mt-2 text-sm text-red-600">{errors.bio.message}</p>
           )}
         </div>
+
+        <p className="text-foreground/50 text-sm">
+          * 홍보글 수정/삭제는 '문의하기'로 요청해주세요.
+        </p>
 
         <div className="flex justify-end gap-2">
           <Button disabled={guildMutation.isPending}>
