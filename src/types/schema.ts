@@ -1,11 +1,18 @@
 import * as z from "zod";
 
+// 한글 초성만 있는지 체크
+const CHOSUNG_REGEX = /^[ㄱ-ㅎㅏ-ㅣ]+$/;
+
 export const guildSchema = z.object({
   name: z
     .string()
     .trim()
     .min(1, "길드명을 입력해주세요.")
-    .max(12, "길드명은 최대 12자까지 가능합니다."),
+    .max(12, "길드명은 최대 12자까지 가능합니다.")
+    .refine(
+      (val) => !CHOSUNG_REGEX.test(val),
+      "길드명은 초성으로 입력할 수 없습니다."
+    ),
   image: z
     .instanceof(FileList)
     .refine((files) => files?.length === 1, "이미지를 등록해주세요.")

@@ -101,7 +101,7 @@ export default function GuildPromotionForm({
     },
     onError: (error) => {
       console.error("Error:", error);
-      toast.error("에러가 발생했습니다. 다시 시도해주세요.");
+      toast.error(error.message || "에러가 발생했습니다. 다시 시도해주세요.");
     },
   });
 
@@ -131,13 +131,13 @@ export default function GuildPromotionForm({
           )}
         </div>
 
-        {/* 길드 아이콘 */}
+        {/* 길드 마크 */}
         <div>
           <label
             htmlFor="image"
             className="block text-sm font-semibold text-gray-700 mb-2"
           >
-            길드 아이콘 <span className="text-red-500">*</span>
+            길드 마크 <span className="text-red-500">*</span>
           </label>
           <div className="flex gap-4">
             <div className="flex-1">
@@ -149,7 +149,7 @@ export default function GuildPromotionForm({
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-600 file:font-semibold hover:file:bg-blue-100 file:transition-colors text-foreground"
               />
               <p className="mt-2 text-xs text-gray-500">
-                * 확장자: JPG, PNG, WEBP (최대 40KB, 24*24 사이즈)
+                * 최대 40KB, 권장 사이즈 64*64(px)
               </p>
             </div>
             {previewImage && (
