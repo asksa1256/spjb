@@ -13,7 +13,7 @@ import supabase from "@/lib/supabase";
 import { useState } from "react";
 import GuildList from "./GuildList";
 import { useQuery } from "@tanstack/react-query";
-import CreateQuizModal from "@/components/feature/quiz/CreateQuizModal";
+import GuildPromotionModal from "./GuildPromotionModal";
 import {
   Tooltip,
   TooltipContent,
@@ -63,14 +63,14 @@ const GuildsModal = () => {
             </Button>
           </DialogTrigger>
         </TooltipTrigger>
-        <TooltipContent>길드 홍보</TooltipContent>
+        <TooltipContent>길드</TooltipContent>
       </Tooltip>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>길드 </DialogTitle>
+          <DialogTitle>길드</DialogTitle>
           <DialogDescription className="text-xs">
-            길드 홍보 공간입니다. 길드를 통해 더 재밌게 즐겨봐요!
+            길드를 홍보하거나 둘러볼 수 있는 공간입니다.
           </DialogDescription>
         </DialogHeader>
 
@@ -91,11 +91,12 @@ const GuildsModal = () => {
             <p className="text-center text-muted-foreground text-sm">
               👇 길드 홍보하기 👇
             </p>
-            <CreateQuizModal />
+            <GuildPromotionModal />
           </div>
         )}
 
         <DialogFooter className="mt-6">
+          <GuildPromotionModal />
           <DialogClose asChild>
             <Button variant="outline" className="!w-auto">
               닫기
