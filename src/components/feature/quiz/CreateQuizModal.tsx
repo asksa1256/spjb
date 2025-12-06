@@ -48,8 +48,8 @@ const CreateQuizModal = () => {
 
       const { error } = await supabase.from(tableName).insert([
         {
-          question: sanitize(question.trim()),
-          answer: sanitize(answer.trim()),
+          question: question.trim(),
+          answer: answer.trim(),
           created_at: createdAt,
           nickname: nickname ? sanitize(nickname.trim()) : null,
         },

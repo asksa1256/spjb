@@ -81,7 +81,7 @@ export default function GuildPromotionForm({
         .from("guilds")
         .insert({
           name: sanitize(data.name),
-          image: sanitize(urlData.publicUrl),
+          image: urlData.publicUrl,
           bio: sanitize(data.bio),
         })
         .select();
