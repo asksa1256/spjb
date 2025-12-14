@@ -9,10 +9,12 @@ import SnowFall from "react-snowfall";
 import SnowConfigButton from "./components/feature/snow/SnowConfigButton";
 import { useState } from "react";
 import BGMPlayer from "./components/feature/bgm/BGMPlayer";
+import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 
 export default function App() {
   const [showSnow, setShowSnow] = useState(true);
   const [snowflakeCount, setSnowflakeCount] = useState(150);
+  const [showPlayer, setShowPlayer] = useState(true);
 
   return (
     <div
@@ -54,6 +56,11 @@ export default function App() {
 
       <ToTopButton />
 
+      <BGMPlayerToggleButton
+        showPlayer={showPlayer}
+        onToggle={() => setShowPlayer((prev) => !prev)}
+      />
+
       {/* 겨울 업데이트: 눈 이펙트 */}
       <SnowConfigButton
         showSnow={showSnow}
@@ -63,7 +70,7 @@ export default function App() {
       />
 
       {/* 배경음악 */}
-      <BGMPlayer />
+      {showPlayer && <BGMPlayer className="mt-4" />}
 
       {/* Vercel Analytics */}
       <Analytics />

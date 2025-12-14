@@ -29,7 +29,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           </h6>
 
           <div className="relative mt-2 flex items-center justify-between gap-2">
-            <h6 className="flex flex-nowrap w-[75%] shrink-0">
+            <h6 className="flex flex-nowrap w-[75%] shrink-0 grow-1">
               <span className="mt-1.5 text-md font-medium text-gray-500 mr-2">
                 A.
               </span>

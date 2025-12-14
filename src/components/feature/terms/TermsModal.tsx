@@ -15,8 +15,8 @@ const TermsModal = () => {
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="text-foreground/40 text-xs"
           size="sm"
+          className="text-foreground/40 text-xs hover:bg-transparent"
         >
           이용약관
         </Button>

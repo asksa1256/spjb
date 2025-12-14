@@ -151,7 +151,7 @@
   60% {
     transform: translateX(var(--marquee-distance));
   }
-  90% {
+  95% {
     transform: translateX(0);
   }
   100% {

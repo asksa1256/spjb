@@ -3,26 +3,27 @@ import { Play, Pause, FastForward, Rewind, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import YouTube, { type YouTubePlayer } from "react-youtube";
 import { cn } from "@/lib/utils";
+import { Slider } from "@/components/ui/slider";
 
 const VIDEO_IDS = ["8r3iXanFcNk", "cY9NiA55tII", "J6EvulKEsmQ"];
 
 const PLAYLIST = [
   {
-    title: "벌써부터 캐롤이 듣고 싶을 수도 있죠.",
+    title: "[playlist] 벌써부터 캐롤이 듣고 싶을 수도 있죠.",
     video_id: "8r3iXanFcNk",
   },
   {
-    title: "존박 캐롤 모음",
+    title: "[Playlist] 존박 캐롤 모음",
     video_id: "cY9NiA55tII",
   },
   {
     title:
-      "전세계 산타도 인정한 K-캐롤의 끝판왕🎅 국내 케이팝 크리스마스 캐롤 플리🎄",
+      "𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 | 전세계 산타도 인정한 K-캐롤의 끝판왕🎅 국내 케이팝 크리스마스 캐롤 플리🎄",
     video_id: "J6EvulKEsmQ",
   },
 ];
 
-export default function BGMPlayer() {
+export default function BGMPlayer({ className }: { className?: string }) {
   const playerRef = useRef<YouTubePlayer | null>(null);
   const [isReady, setIsReady] = useState(false);
 
@@ -118,7 +119,7 @@ export default function BGMPlayer() {
   }, [currentIdx]);
 
   return (
-    <>
+    <section className={className}>
       <YouTube
         videoId={VIDEO_IDS[0]}
         opts={opts}
@@ -128,12 +129,15 @@ export default function BGMPlayer() {
       />
 
       {/* 재생 정보 */}
-      <div className="flex flex-col w-[50%] items-center gap-2 mb-2 font-mono tracking-tighter text-xs text-foreground">
+      <div className="flex flex-col w-[90%] mx-auto justify-center items-center gap-2 font-mono tracking-tighter text-xs text-foreground">
         <span>
           Track {currentIdx + 1} / {PLAYLIST.length}
         </span>
 
-        <div ref={wrapperRef} className="relative w-full overflow-hidden">
+        <div
+          ref={wrapperRef}
+          className="relative max-w-[260px] overflow-hidden"
+        >
           <span
             ref={titleRef}
             style={marqueeStyle}
@@ -155,8 +159,9 @@ export default function BGMPlayer() {
             size="icon"
             disabled={!isReady}
             onClick={playPrev}
+            className="hover:bg-background/10"
           >
-            <Rewind />
+            <Rewind className="text-foreground" />
           </Button>
 
           {isPlaying ? (
@@ -165,8 +170,9 @@ export default function BGMPlayer() {
               size="icon"
               onClick={pauseVideo}
               disabled={!isReady}
+              className="hover:bg-background/10"
             >
-              <Pause />
+              <Pause className="text-foreground" />
             </Button>
           ) : (
             <Button
@@ -174,8 +180,9 @@ export default function BGMPlayer() {
               size="icon"
               onClick={playVideo}
               disabled={!isReady}
+              className="hover:bg-background/10"
             >
-              <Play />
+              <Play className="text-foreground" />
             </Button>
           )}
 
@@ -184,25 +191,26 @@ export default function BGMPlayer() {
             size="icon"
             disabled={!isReady}
             onClick={playNext}
+            className="hover:bg-background/10"
           >
-            <FastForward />
+            <FastForward className="text-foreground" />
           </Button>
 
           {/* 볼륨 */}
           <div className="flex items-center gap-2 text-foreground/50 ml-4">
-            <Volume2 className="size-5" />
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={volume}
-              onChange={(e) => setPlayerVolume(Number(e.target.value))}
-              className="w-20 h-1.5 accent-white cursor-pointer"
+            <Volume2 className="size-4" />
+            <Slider
+              min={0}
+              max={100}
+              step={1}
+              value={[volume]}
+              onValueChange={([v]) => setPlayerVolume(v)}
+              className="w-20 [&>.slider-track]:bg-foreground/10"
             />
             <span className="text-xs font-mono">{volume}%</span>
           </div>
         </div>
       </div>
-    </>
+    </section>
   );
 }
