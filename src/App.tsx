@@ -8,6 +8,7 @@ import ToTopButton from "./components/ui/ToTopButton";
 import SnowFall from "react-snowfall";
 import SnowConfigButton from "./components/feature/snow/SnowConfigButton";
 import { useState } from "react";
+import BGMPlayer from "./components/feature/bgm/BGMPlayer";
 
 export default function App() {
   const [showSnow, setShowSnow] = useState(true);
@@ -60,6 +61,9 @@ export default function App() {
         onChangeShow={setShowSnow}
         onChangeCount={(v) => setSnowflakeCount(v[0])}
       />
+
+      {/* 배경음악 */}
+      <BGMPlayer />
 
       {/* Vercel Analytics */}
       <Analytics />
