@@ -20,20 +20,19 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { type Contributors } from "@/types";
 
-async function fetchContributors(): Promise<string[]> {
-  const allNicknames: string[] = [];
-
+async function fetchContributors(): Promise<Contributors[]> {
   const { data, error } = await supabase
     .from("contributors_view")
-    .select("nickname")
-    .limit(1000);
+    .select("nickname, count")
+    .limit(100);
 
-  if (!error && data) {
-    allNicknames.push(...data.map((d) => d.nickname));
+  if (error) {
+    throw error;
   }
 
-  return Array.from(new Set(allNicknames));
+  return data;
 }
 
 const ContributorsModal = () => {
@@ -92,7 +91,7 @@ const ContributorsModal = () => {
           </div>
         )}
 
-        <DialogFooter className="mt-6">
+        <DialogFooter className="">
           <DialogClose asChild>
             <Button variant="outline" className="!w-auto">
               닫기

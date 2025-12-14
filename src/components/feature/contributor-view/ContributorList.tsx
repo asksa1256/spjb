@@ -1,7 +1,8 @@
 import { useRef, useEffect } from "react";
+import { type Contributors } from "@/types";
 
 interface ContributorListProps {
-  contributors: string[];
+  contributors: Contributors[];
   open?: boolean; // 모달 열림 상태
 }
 
@@ -45,13 +46,14 @@ const ContributorList = ({ contributors, open }: ContributorListProps) => {
       className="max-h-[308px] overflow-y-auto space-y-1 text-sm"
     >
       {contributors.length > 0 ? (
-        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 p-2">
-          {contributors.map((name) => (
+        <ul className="grid grid-cols-2 gap-3 p-2">
+          {contributors.map((c) => (
             <li
-              key={name}
-              className="flex items-center gap-2 rounded-xl transition-colors text-sm font-medium truncate"
+              key={c.nickname}
+              className="flex items-center gap-0.5 rounded-xl transition-colors text-sm font-medium truncate"
             >
-              <span className="truncate text-foreground">💙 {name}</span>
+              <span className="truncate text-foreground">💙 {c.nickname}</span>
+              <span className="text-foreground/40 text-xs">({c.count}개)</span>
             </li>
           ))}
         </ul>
