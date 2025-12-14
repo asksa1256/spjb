@@ -62,7 +62,7 @@ const NoticeContents = () => {
               on/off하실 수 있습니다.
             </p>
             <p className="text-sm">
-              '재생' 버튼을 눌러주셔야 재생됩니다. (autoplay 지원X)
+              &apos;재생&apos; 버튼을 눌러주셔야 재생됩니다. (autoplay 지원X)
             </p>
             <p className="text-sm">
               배경음악을 끄면 화면에서 컨트롤러가 사라지고, 배경음악도 멈춥니다.
