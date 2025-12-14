@@ -17,21 +17,41 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import NoticeContents from "./NoticeContents";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { NOTICE_STORAGE_KEY, NOTICE_VERSION } from "@/constants";
 
 const NoticeModal = () => {
   const [open, setOpen] = useState(false);
 
+  const [lastCheckedVersion, setLastCheckedVersion] = useLocalStorage<
+    string | null
+  >(NOTICE_STORAGE_KEY, null);
+
+  // 파생 상태
+  const hasUnread = lastCheckedVersion !== NOTICE_VERSION;
+
+  const handleOpenChange = (v: boolean) => {
+    setOpen(v);
+
+    if (v) {
+      setLastCheckedVersion(NOTICE_VERSION);
+    }
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <Tooltip>
         <TooltipTrigger asChild>
           <DialogTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="w-auto mx-auto text-foreground"
+              className="relative w-auto mx-auto text-foreground"
             >
               <Megaphone className="size-5!" />
+              {hasUnread && (
+                <span className="absolute top-2 right-1.5 size-1.5 rounded-full bg-red-500 outline-2 outline-background" />
+              )}
             </Button>
           </DialogTrigger>
         </TooltipTrigger>
