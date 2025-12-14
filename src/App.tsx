@@ -53,6 +53,9 @@ export default function App() {
 
           <CreateQuizModal />
         </section>
+
+        {/* 배경음악 */}
+        {showPlayer && <BGMPlayer className="mt-12" />}
       </main>
 
       <Footer />
@@ -71,9 +74,6 @@ export default function App() {
         onChangeShow={setShowSnow}
         onChangeCount={(v) => setSnowflakeCount(v[0])}
       />
-
-      {/* 배경음악 */}
-      {showPlayer && <BGMPlayer className="mt-4" />}
 
       {/* Vercel Analytics */}
       <Analytics />
