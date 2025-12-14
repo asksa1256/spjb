@@ -7,7 +7,7 @@ import Footer from "./components/ui/Footer";
 import ToTopButton from "./components/ui/ToTopButton";
 import SnowFall from "react-snowfall";
 import SnowConfigButton from "./components/feature/snow/SnowConfigButton";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import BGMPlayer from "./components/feature/bgm/BGMPlayer";
 import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 import useLocalStorage from "./hooks/useLocalStorage";
@@ -16,8 +16,6 @@ export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
   const [showPlayer, setShowPlayer] = useLocalStorage("showPlayer", true);
-
-  useEffect(() => {}, []);
 
   return (
     <div
