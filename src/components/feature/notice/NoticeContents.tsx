@@ -1,16 +1,81 @@
-import GuildBtnImg from "@/assets/images/guild-btn.png";
-import GuildFormImg from "@/assets/images/guild-form.png";
-import GuildModalImg from "@/assets/images/guilds-modal.png";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import GuildBtnImg from "@/assets/images/guild-btn.png";
+import GuildFormImg from "@/assets/images/guild-form.png";
+import GuildModalImg from "@/assets/images/guilds-modal.png";
+import SnowConfigImg from "@/assets/images/snow-config.png";
+import SnowLightImg from "@/assets/images/snow-light.png";
+import SnowDarkImg from "@/assets/images/snow-dark.png";
+import BgmOnImg from "@/assets/images/bgm-on.png";
 
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="item-2">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "눈 내리기, 배경음악" 기능 업데이트 (2025.12.14.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <p className="mb-4">
+            전국에 첫눈이 내린 기념으로
+            <br />
+            <b>눈 내리기</b> 기능과 <b>배경음악</b> 기능을 추가했습니다.
+          </p>
+
+          <hr className="mb-4" />
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) 눈 내리기 모드 추가</h4>
+            <p>
+              화면 좌측 하단의 눈송이 모양 버튼을 클릭하면 눈 내리기 모드를
+              on/off 할 수 있습니다.
+            </p>
+            <figure>
+              <img src={SnowConfigImg} alt="눈 내리기 설정" />
+            </figure>
+            <p>
+              눈 내리기 기능은 기본적으로 켜져있으며, 다크 모드에서 더욱
+              선명하게 보입니다.
+            </p>
+            <figure>
+              <img src={SnowLightImg} alt="눈 내리기 - 라이트 모드" />
+            </figure>
+            <figure>
+              <img src={SnowDarkImg} alt="눈 내리기 - 다크 모드" />
+            </figure>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">2) BGM 플레이어 추가</h4>
+            <p>
+              겨울 분위기 가득한 캐롤 플레이리스트 3개를 감상하실 수 있습니다.
+            </p>
+            <figure>
+              <img src={BgmOnImg} alt="bgm 플레이어 on 화면" />
+            </figure>
+            <p className="text-sm">
+              좌측 하단의 16분 음표 아이콘 버튼을 클릭하시면 배경음악을
+              on/off하실 수 있습니다.
+            </p>
+            <p className="text-sm">
+              배경음악을 끄면 화면에서 컨트롤러가 사라지고, 배경음악도 멈춥니다.
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">
+            심플족보를 이용해주시는 분들께 항상 감사드립니다.
+            <br />
+            행복한 연말 되세요!
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="item-1">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "길드 홍보" 기능 업데이트 (2025.12.01.)
