@@ -98,7 +98,7 @@ const SearchContainer = () => {
   }, [debouncedSetKeyword]);
 
   return (
-    <section className="relative flex flex-col items-center w-full">
+    <section className="relative flex flex-col items-center w-full z-[2]">
       <div className="flex flex-col sm:w-[400px] sm:px-0 px-4 w-full self-center items-center">
         <div className="rounded-full bg-background py-1.5 px-2 flex shadow-md w-full max-w-[400px]">
           <CategorySelect
@@ -113,7 +113,7 @@ const SearchContainer = () => {
                 ref={inputRef}
                 value={keyword}
                 placeholder="🔍 2글자 이상 입력..."
-                className="border-none shadow-none w-[90%] rounded-full"
+                className="border-none shadow-none rounded-full w-full focus-visible:ring-blue-200"
                 onChange={handleSearch}
               />
 
