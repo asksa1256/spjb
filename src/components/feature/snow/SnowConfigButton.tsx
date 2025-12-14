@@ -46,7 +46,7 @@ export default function SnowConfigButton({
           type="button"
           size="icon"
           className={cn(
-            "fixed z-[1] left-6 bottom-8 transition-colors duration-300 bg-background rounded-full shadow-sm p-6",
+            "fixed z-1 left-6 bottom-8 transition-colors duration-300 bg-background rounded-full shadow-sm p-6 hover:bg-blue-100 hover:text-blue-500",
             {
               "text-blue-500": showSnow,
               "text-foreground/20": !showSnow,
