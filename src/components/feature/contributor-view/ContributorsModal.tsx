@@ -91,7 +91,7 @@ const ContributorsModal = () => {
           </div>
         )}
 
-        <DialogFooter className="">
+        <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline" className="!w-auto">
               닫기
