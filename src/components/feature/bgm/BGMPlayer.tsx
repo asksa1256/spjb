@@ -5,16 +5,16 @@ import YouTube, { type YouTubePlayer } from "react-youtube";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 
-const VIDEO_IDS = ["8r3iXanFcNk", "cY9NiA55tII", "J6EvulKEsmQ"];
+const VIDEO_IDS = ["XEr1TPlrLfs", "q-ZFpbrokMg", "J6EvulKEsmQ"];
 
 const PLAYLIST = [
   {
-    title: "[playlist] 벌써부터 캐롤이 듣고 싶을 수도 있죠.",
-    video_id: "8r3iXanFcNk",
+    title: "연말·연초, 기분 업 플레이리스트☺️🎧",
+    video_id: "XEr1TPlrLfs",
   },
   {
-    title: "[Playlist] 존박 캐롤 모음",
-    video_id: "cY9NiA55tII",
+    title: "퍼펙트 크리스마스 캐롤 플레이리스트🎄🎅🎁",
+    video_id: "q-ZFpbrokMg",
   },
   {
     title:
