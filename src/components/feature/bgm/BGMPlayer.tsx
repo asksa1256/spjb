@@ -1,13 +1,20 @@
 import { useState, useCallback, useRef, useEffect } from "react";
-import { Play, Pause, FastForward, Rewind, Volume2 } from "lucide-react";
+import {
+  Play,
+  Pause,
+  FastForward,
+  Rewind,
+  Volume2,
+  Settings,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import YouTube, { type YouTubePlayer } from "react-youtube";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
+import PlayerConfigDialog from "./PlayerConfigDialog";
+import { type PlaylistItem } from "./PlayerConfigDialog";
 
-const VIDEO_IDS = ["XEr1TPlrLfs", "q-ZFpbrokMg", "J6EvulKEsmQ"];
-
-const PLAYLIST = [
+const DEFAULT_PLAYLIST = [
   {
     title: "연말·연초, 기분 업 플레이리스트☺️🎧",
     video_id: "XEr1TPlrLfs",
@@ -24,9 +31,11 @@ const PLAYLIST = [
 ];
 
 export default function BGMPlayer({ className }: { className?: string }) {
+  const [playlist, setPlaylist] = useState(DEFAULT_PLAYLIST);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
   const playerRef = useRef<YouTubePlayer | null>(null);
   const [isReady, setIsReady] = useState(false);
-
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -35,20 +44,6 @@ export default function BGMPlayer({ className }: { className?: string }) {
     playerRef.current = e.target;
     e.target.setVolume(volume);
     setIsReady(true);
-  };
-
-  const onStateChange = (e: { data: number }) => {
-    if (e.data === YT.PlayerState.PLAYING) {
-      setIsPlaying(true);
-    }
-
-    if (e.data === YT.PlayerState.ENDED) {
-      playNext();
-    }
-
-    if (e.data === YT.PlayerState.PAUSED) {
-      setIsPlaying(false);
-    }
   };
 
   const playVideo = () => {
@@ -60,18 +55,43 @@ export default function BGMPlayer({ className }: { className?: string }) {
     playerRef.current?.pauseVideo();
   };
 
-  const playNext = () => {
-    setCurrentIdx((prev) => (prev + 1) % VIDEO_IDS.length);
-  };
+  const playNext = useCallback(() => {
+    if (playlist.length === 0) return;
+    setCurrentIdx((prev) => (prev + 1) % playlist.length);
+  }, [playlist.length]);
 
-  const playPrev = () => {
-    setCurrentIdx((prev) => (prev === 0 ? VIDEO_IDS.length - 1 : prev - 1));
-  };
+  const playPrev = useCallback(() => {
+    if (playlist.length === 0) return;
+    setCurrentIdx((prev) => (prev === 0 ? playlist.length - 1 : prev - 1));
+  }, [playlist.length]);
 
   const setPlayerVolume = useCallback((v: number) => {
     playerRef.current?.setVolume(v);
     setVolume(v);
   }, []);
+
+  const onStateChange = useCallback(
+    (e: { data: number }) => {
+      if (e.data === 1) {
+        setIsPlaying(true);
+      }
+      if (e.data === 0) {
+        if (playlist.length > 1) {
+          playNext();
+        }
+      }
+      if (e.data === 2) {
+        setIsPlaying(false);
+      }
+    },
+    [playNext, playlist.length]
+  );
+
+  const handleSavePlaylist = (newPlaylist: PlaylistItem[]) => {
+    if (newPlaylist.length === 0) return;
+    setPlaylist(newPlaylist);
+    setCurrentIdx(0);
+  };
 
   const opts = {
     width: "1",
@@ -84,19 +104,22 @@ export default function BGMPlayer({ className }: { className?: string }) {
   };
 
   useEffect(() => {
-    if (!isReady || !playerRef.current) return;
+    const videoId = playlist[currentIdx]?.video_id;
+    if (!isReady || !playerRef.current || !videoId) return;
 
-    if (currentIdx === 0) return;
+    try {
+      playerRef.current.loadVideoById(videoId);
+    } catch (e) {
+      console.error("비디오 로드 실패: ", e);
+    }
+  }, [currentIdx, isReady, playlist]);
 
-    playerRef.current.loadVideoById(VIDEO_IDS[currentIdx]);
-  }, [currentIdx, isReady]);
-
-  // 타이틀 길이, 타이틀 영역 길이 계산
   const titleRef = useRef<HTMLSpanElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [isOverflow, setIsOverflow] = useState(false);
   const [marqueeStyle, setMarqueeStyle] = useState<React.CSSProperties>({});
 
+  // marquee config
   useEffect(() => {
     const title = titleRef.current;
     const wrapper = wrapperRef.current;
@@ -111,57 +134,60 @@ export default function BGMPlayer({ className }: { className?: string }) {
     }
 
     const distance = title.scrollWidth - wrapper.clientWidth;
-
     setMarqueeStyle({
       "--marquee-distance": `-${distance}px`,
-      "--marquee-duration": `${Math.max(distance / 12, 10)}s`, // 길이에 따라 속도 보정
+      "--marquee-duration": `${Math.max(distance / 12, 10)}s`,
     } as React.CSSProperties);
-  }, [currentIdx]);
+  }, [currentIdx, playlist]);
 
   return (
-    <section className={className}>
+    <section
+      className={cn(
+        "p-4 bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg text-foreground",
+        className
+      )}
+    >
       <YouTube
-        videoId={VIDEO_IDS[0]}
+        videoId={playlist[0]?.video_id}
         opts={opts}
         onReady={onReady}
         onStateChange={onStateChange}
         className="absolute -left-[9999px]"
       />
 
-      {/* 재생 정보 */}
-      <div className="flex flex-col w-[90%] mx-auto justify-center items-center gap-2 font-mono tracking-tighter text-xs text-foreground">
-        <span>
-          Track {currentIdx + 1} / {PLAYLIST.length}
-        </span>
-
-        <div
-          ref={wrapperRef}
-          className="relative max-w-[260px] overflow-hidden"
-        >
-          <span
-            ref={titleRef}
-            style={marqueeStyle}
-            className={cn(
-              "block whitespace-nowrap text-center",
-              isOverflow && "animate-marquee"
-            )}
-          >
-            {PLAYLIST[currentIdx]?.title}
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col w-[90%] mx-auto justify-center items-center gap-2 font-mono tracking-tighter text-xs">
+          <span>
+            Track {currentIdx + 1} / {playlist.length}
           </span>
-        </div>
-      </div>
 
-      {/* 컨트롤 UI */}
-      <div className="flex flex-col w-full gap-6">
-        <div className="flex items-center justify-center gap-2">
+          <div
+            ref={wrapperRef}
+            className="relative max-w-[260px] overflow-hidden"
+          >
+            <span
+              ref={titleRef}
+              style={marqueeStyle}
+              className={cn(
+                "block whitespace-nowrap text-center",
+                isOverflow && "animate-marquee"
+              )}
+            >
+              {playlist[currentIdx]?.title || "Untitled"}
+            </span>
+          </div>
+        </div>
+
+        {/* 컨트롤러 */}
+        <div className="flex items-center justify-center gap-2 flex-wrap">
           <Button
             variant="ghost"
             size="icon"
             disabled={!isReady}
             onClick={playPrev}
-            className="hover:bg-background/10"
+            className="text-foreground hover:bg-background/10"
           >
-            <Rewind className="text-foreground" />
+            <Rewind />
           </Button>
 
           {isPlaying ? (
@@ -170,9 +196,9 @@ export default function BGMPlayer({ className }: { className?: string }) {
               size="icon"
               onClick={pauseVideo}
               disabled={!isReady}
-              className="hover:bg-background/10"
+              className="text-foreground hover:bg-background/10"
             >
-              <Pause className="text-foreground" />
+              <Pause />
             </Button>
           ) : (
             <Button
@@ -180,9 +206,9 @@ export default function BGMPlayer({ className }: { className?: string }) {
               size="icon"
               onClick={playVideo}
               disabled={!isReady}
-              className="hover:bg-background/10"
+              className="text-foreground hover:bg-background/10"
             >
-              <Play className="text-foreground" />
+              <Play />
             </Button>
           )}
 
@@ -191,26 +217,43 @@ export default function BGMPlayer({ className }: { className?: string }) {
             size="icon"
             disabled={!isReady}
             onClick={playNext}
-            className="hover:bg-background/10"
+            className="text-foreground hover:bg-background/10"
           >
-            <FastForward className="text-foreground" />
+            <FastForward />
           </Button>
 
-          {/* 볼륨 */}
-          <div className="flex items-center gap-2 text-foreground/50 ml-4">
-            <Volume2 className="size-4" />
+          <div className="flex items-center gap-2 ml-4">
+            <Volume2 className="size-4 text-foreground" />
             <Slider
               min={0}
               max={100}
               step={1}
               value={[volume]}
               onValueChange={([v]) => setPlayerVolume(v)}
-              className="w-20 [&>.slider-track]:bg-foreground/10"
+              className="w-20"
             />
-            <span className="text-xs font-mono">{volume}%</span>
+            <span className="text-xs font-mono text-foreground w-[30px]">
+              {volume}%
+            </span>
           </div>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsDialogOpen(true)}
+            className="hover:bg-background/10 ml-2"
+          >
+            <Settings className="size-4 text-foreground" />
+          </Button>
         </div>
       </div>
+
+      <PlayerConfigDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        playlist={playlist}
+        onSave={handleSavePlaylist}
+      />
     </section>
   );
 }
