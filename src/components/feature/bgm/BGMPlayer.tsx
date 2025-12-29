@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import PlayerConfigDialog from "./PlayerConfigDialog";
 import { type PlaylistItem } from "./PlayerConfigDialog";
+import { PLAYLIST_STORAGE_KEY } from "@/constants";
 
 const DEFAULT_PLAYLIST = [
   {
@@ -39,6 +40,22 @@ export default function BGMPlayer({ className }: { className?: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [currentIdx, setCurrentIdx] = useState(0);
+
+  // 마운트 시 로컬스토리지 플레이리스트 불러오기
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(PLAYLIST_STORAGE_KEY);
+      if (!saved) return;
+
+      const parsed: PlaylistItem[] = JSON.parse(saved);
+      if (parsed.length > 0) {
+        setPlaylist(parsed);
+        setCurrentIdx(0);
+      }
+    } catch (e) {
+      console.error("플레이리스트 로드 실패:", e);
+    }
+  }, []);
 
   const onReady = (e: { target: YouTubePlayer }) => {
     playerRef.current = e.target;
@@ -89,8 +106,23 @@ export default function BGMPlayer({ className }: { className?: string }) {
 
   const handleSavePlaylist = (newPlaylist: PlaylistItem[]) => {
     if (newPlaylist.length === 0) return;
+
     setPlaylist(newPlaylist);
     setCurrentIdx(0);
+
+    try {
+      localStorage.setItem(
+        PLAYLIST_STORAGE_KEY,
+        JSON.stringify(
+          newPlaylist.map(({ title, video_id }) => ({
+            title,
+            video_id,
+          }))
+        )
+      );
+    } catch (e) {
+      console.error("플레이리스트 로컬스토리지 저장 실패:", e);
+    }
   };
 
   const opts = {
@@ -143,7 +175,7 @@ export default function BGMPlayer({ className }: { className?: string }) {
   return (
     <section
       className={cn(
-        "p-4 bg-gradient-to-br from-purple-900/20 to-blue-900/20 rounded-lg text-foreground",
+        "p-4 bg-gradient-to-br from-purple-300/20 to-blue-300/20 rounded-lg text-foreground",
         className
       )}
     >

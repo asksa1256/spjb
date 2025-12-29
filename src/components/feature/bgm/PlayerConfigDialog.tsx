@@ -24,7 +24,7 @@ interface PlaylistConfigProps {
 
 const extractVideoId = (input: string) => {
   try {
-    // 그냥 ID만 입력한 경우
+    // 비디오 ID만 입력한 경우
     if (!input.includes("youtube.com") && !input.includes("youtu.be")) {
       return input.trim();
     }
