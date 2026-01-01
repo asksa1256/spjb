@@ -61,7 +61,6 @@ const CreateQuizModal = () => {
 
       queryClient.invalidateQueries({ queryKey: ["quiz", category] });
 
-      setCategory("");
       setQuestion("");
       setAnswer("");
     } catch (error) {
