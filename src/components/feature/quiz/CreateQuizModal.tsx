@@ -138,7 +138,7 @@ const CreateQuizModal = () => {
               >
                 답
               </label>
-              <Input
+              <Textarea
                 id="answer"
                 name="answer"
                 placeholder="답 입력"
