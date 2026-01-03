@@ -14,25 +14,14 @@ import { Slider } from "@/components/ui/slider";
 import PlayerConfigDialog from "./PlayerConfigDialog";
 import { type PlaylistItem } from "./PlayerConfigDialog";
 import { PLAYLIST_STORAGE_KEY } from "@/constants";
-
-const DEFAULT_PLAYLIST = [
-  {
-    title: "연말·연초, 기분 업 플레이리스트☺️🎧",
-    video_id: "XEr1TPlrLfs",
-  },
-  {
-    title: "퍼펙트 크리스마스 캐롤 플레이리스트🎄🎅🎁",
-    video_id: "q-ZFpbrokMg",
-  },
-  {
-    title:
-      "𝑷𝒍𝒂𝒚𝒍𝒊𝒔𝒕 | 전세계 산타도 인정한 K-캐롤의 끝판왕🎅 국내 케이팝 크리스마스 캐롤 플리🎄",
-    video_id: "J6EvulKEsmQ",
-  },
-];
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function BGMPlayer({ className }: { className?: string }) {
-  const [playlist, setPlaylist] = useState(DEFAULT_PLAYLIST);
+  const [playlist, setPlaylist] = useState<PlaylistItem[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const playerRef = useRef<YouTubePlayer | null>(null);
@@ -40,6 +29,8 @@ export default function BGMPlayer({ className }: { className?: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(50);
   const [currentIdx, setCurrentIdx] = useState(0);
+
+  const lastLoadedIdRef = useRef<string>(""); // 마지막으로 로드된 비디오 ID를 ref로 관리
 
   // 마운트 시 로컬스토리지 플레이리스트 불러오기
   useEffect(() => {
@@ -107,19 +98,27 @@ export default function BGMPlayer({ className }: { className?: string }) {
   const handleSavePlaylist = (newPlaylist: PlaylistItem[]) => {
     if (newPlaylist.length === 0) return;
 
+    const currentVideoId = playlist[currentIdx]?.video_id;
+
+    // 새 리스트에서 기존 곡 인덱스
+    const newIdx = newPlaylist.findIndex(
+      (item) => item.video_id === currentVideoId
+    );
+
+    if (newIdx !== -1) {
+      // 시나리오 A: 재생 중인 곡이 새 리스트에도 있는 경우 -> 인덱스만 새 위치로 업데이트
+      setCurrentIdx(newIdx);
+    } else {
+      // 시나리오 B: 재생 중인 곡이 삭제된 경우 -> 현재 인덱스 유지 (자동으로 다음 곡 재생)
+      // 마지막 곡을 삭제해서 인덱스가 범위를 벗어날 경우, 마지막 곡을 현재 곡으로 설정
+      const nextIdx = Math.min(currentIdx, newPlaylist.length - 1);
+      setCurrentIdx(nextIdx);
+    }
+
     setPlaylist(newPlaylist);
-    setCurrentIdx(0);
 
     try {
-      localStorage.setItem(
-        PLAYLIST_STORAGE_KEY,
-        JSON.stringify(
-          newPlaylist.map(({ title, video_id }) => ({
-            title,
-            video_id,
-          }))
-        )
-      );
+      localStorage.setItem(PLAYLIST_STORAGE_KEY, JSON.stringify(newPlaylist));
     } catch (e) {
       console.error("플레이리스트 로컬스토리지 저장 실패:", e);
     }
@@ -135,12 +134,18 @@ export default function BGMPlayer({ className }: { className?: string }) {
     },
   };
 
+  // 플레이리스트 편집 시 첫 곡부터 다시 시작되는 현상 방지
   useEffect(() => {
-    const videoId = playlist[currentIdx]?.video_id;
+    const videoId = playlist[currentIdx]?.video_id; // 현재 재생 중인 곡 인덱스
     if (!isReady || !playerRef.current || !videoId) return;
+
+    // 현재 재생 중인 곡이 마지막으로 로드된 곡과 같다면 아무것도 하지 않음 (플레이리스트 편집 시 첫 번째 곡부터 재시작 방지)
+    if (videoId === lastLoadedIdRef.current) return;
 
     try {
       playerRef.current.loadVideoById(videoId);
+      lastLoadedIdRef.current = videoId; // 로드 완료 -> 마지막 로드 곡을 현재 재생 중인 곡으로 업데이트
+      setIsPlaying(true);
     } catch (e) {
       console.error("비디오 로드 실패: ", e);
     }
@@ -190,7 +195,7 @@ export default function BGMPlayer({ className }: { className?: string }) {
       <div className="flex flex-col gap-2">
         <div className="flex flex-col w-[90%] mx-auto justify-center items-center gap-2 font-mono tracking-tighter text-xs">
           <span>
-            Track {currentIdx + 1} / {playlist.length}
+            Track {playlist.length > 0 ? currentIdx + 1 : 0} / {playlist.length}
           </span>
 
           <div
@@ -205,7 +210,9 @@ export default function BGMPlayer({ className }: { className?: string }) {
                 isOverflow && "animate-marquee"
               )}
             >
-              {playlist[currentIdx]?.title || "Untitled"}
+              {playlist.length > 0
+                ? playlist[currentIdx]?.title || "Untitled"
+                : "플레이리스트를 추가해주세요."}
             </span>
           </div>
         </div>
@@ -269,14 +276,20 @@ export default function BGMPlayer({ className }: { className?: string }) {
             </span>
           </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsDialogOpen(true)}
-            className="hover:bg-background/10 ml-2"
-          >
-            <Settings className="size-4 text-foreground" />
-          </Button>
+          {/* 플레이리스트 편집 */}
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsDialogOpen(true)}
+                className="hover:bg-background/10 ml-2"
+              >
+                <Settings className="size-4 text-foreground" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>플레이리스트 편집</TooltipContent>
+          </Tooltip>
         </div>
       </div>
 
