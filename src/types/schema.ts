@@ -32,3 +32,12 @@ export const guildSchema = z.object({
 });
 
 export type GuildFormData = z.infer<typeof guildSchema>;
+
+export const quizFormSchema = z.object({
+  category: z.string().min(1, "카테고리를 선택해주세요."),
+  question: z.string().min(1, "문제를 입력해주세요.").trim(),
+  answer: z.string().min(1, "답을 입력해주세요.").trim(),
+  nickname: z.string().optional(),
+});
+
+export type QuizFormValues = z.infer<typeof quizFormSchema>;
