@@ -104,7 +104,7 @@ export default function PlayerConfigDialog({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>플레이리스트 편집</DialogTitle>
-          <DialogDescription className="text-sm text-foreground/50">
+          <DialogDescription className="text-sm text-foreground/50 text-left">
             유튜브 동영상 링크 추가/삭제로 플레이리스트를 편집할 수 있습니다.
             <br />
             <span className="flex gap-1 items-center">
