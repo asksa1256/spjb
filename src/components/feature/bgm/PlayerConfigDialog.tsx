@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -53,6 +53,21 @@ export default function PlayerConfigDialog({
 }: PlaylistConfigProps) {
   const [tempPlaylist, setTempPlaylist] = useState<PlaylistItem[]>([]);
 
+  // 링크 추가 시 스크롤 하단 이동용
+  const scrollEndRef = useRef<HTMLLIElement>(null);
+
+  // 스크롤 하단 이동
+  const scrollToBottom = () => {
+    scrollEndRef.current?.scrollIntoView();
+  };
+
+  // 리스트의 길이가 늘어날 때마다 하단으로 스크롤 이동
+  useEffect(() => {
+    if (tempPlaylist.length > 0) {
+      scrollToBottom();
+    }
+  }, [tempPlaylist.length]);
+
   useEffect(() => {
     if (isOpen) {
       setTempPlaylist([...playlist]);
@@ -64,6 +79,8 @@ export default function PlayerConfigDialog({
       ...tempPlaylist,
       { title: "", video_id: "", video_url: "" },
     ]);
+
+    // 맨 밑으로 스크롤 이동
   };
 
   const handleRemoveItem = (targetIdx: number) => {
@@ -125,56 +142,61 @@ export default function PlayerConfigDialog({
         </DialogHeader>
 
         <ul className="flex flex-col gap-4 max-h-[400px] overflow-y-auto text-foreground">
-          {tempPlaylist.map((item, i) => (
-            <li
-              key={i}
-              className="flex gap-2 items-start p-4 border-2 rounded-lg"
-            >
-              <div className="flex-1 space-y-3">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor={`video-${i}`} className="text-sm">
-                    비디오 링크<sup className="text-red-500">*</sup>
-                  </label>
-                  <Input
-                    id={`video-${i}`}
-                    value={item.video_url}
-                    onChange={(e) =>
-                      handleUpdateItem(i, "video_url", e.target.value)
-                    }
-                    placeholder="유튜브 동영상 링크 또는 동영상 ID"
-                    required
-                    className="text-xs"
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor={`title-${i}`} className="text-sm">
-                    제목
-                  </label>
-                  <Input
-                    id={`title-${i}`}
-                    value={item.title}
-                    onChange={(e) =>
-                      handleUpdateItem(i, "title", e.target.value)
-                    }
-                    placeholder="곡/플레이리스트 제목 (선택사항)"
-                  />
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleRemoveItem(i)}
-                className="mt-6 hover:bg-destructive/10 hover:text-destructive"
+          {tempPlaylist.map((item, i) => {
+            const isLastItem = i === tempPlaylist.length - 1;
+
+            return (
+              <li
+                key={i}
+                ref={isLastItem ? scrollEndRef : null}
+                className="flex gap-2 items-start p-4 border-2 rounded-lg"
               >
-                <Trash2 className="size-4" />
-              </Button>
-            </li>
-          ))}
+                <div className="flex-1 space-y-3">
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor={`video-${i}`} className="text-sm">
+                      비디오 링크<sup className="text-red-500">*</sup>
+                    </label>
+                    <Input
+                      id={`video-${i}`}
+                      value={item.video_url}
+                      onChange={(e) =>
+                        handleUpdateItem(i, "video_url", e.target.value)
+                      }
+                      placeholder="유튜브 동영상 링크 또는 동영상 ID"
+                      required
+                      className="text-xs"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <label htmlFor={`title-${i}`} className="text-sm">
+                      제목
+                    </label>
+                    <Input
+                      id={`title-${i}`}
+                      value={item.title}
+                      onChange={(e) =>
+                        handleUpdateItem(i, "title", e.target.value)
+                      }
+                      placeholder="곡/플레이리스트 제목 (선택사항)"
+                    />
+                  </div>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleRemoveItem(i)}
+                  className="mt-6 hover:bg-destructive/10 hover:text-destructive"
+                >
+                  <Trash2 className="size-4" />
+                </Button>
+              </li>
+            );
+          })}
         </ul>
 
         <Button onClick={handleAddItem} variant="outline" className="w-full">
           <Plus className="size-4" />
-          비디오 추가
+          링크 추가
         </Button>
 
         <div className="flex gap-2 pt-4">
