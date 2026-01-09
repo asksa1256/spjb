@@ -16,11 +16,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import supabase from "@/lib/supabase";
 import { Plus } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { quizFormSchema, type QuizFormValues } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
@@ -71,21 +66,16 @@ const CreateQuizModal = () => {
 
   return (
     <Dialog>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              size="lg"
-              className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
-            >
-              <Plus className="-mr-1" />
-              문제 추가하기
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">찾는 문제가 없으셨나요?</TooltipContent>
-      </Tooltip>
+      <DialogTrigger asChild>
+        <Button
+          variant="outline"
+          size="lg"
+          className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
+        >
+          <Plus className="-mr-1" />
+          문제 등록하기
+        </Button>
+      </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className="mb-4">

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Trash2, Plus, TriangleAlert } from "lucide-react";
 import { toast } from "sonner";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import supabase from "@/lib/supabase";
 
 export interface PlaylistItem {
   title: string;
@@ -81,7 +82,7 @@ export default function PlayerConfigDialog({
     );
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const normalizedPlaylist = tempPlaylist
       .map((item) => ({
         ...item,
@@ -96,6 +97,15 @@ export default function PlayerConfigDialog({
     }
 
     onSave(normalizedPlaylist);
+
+    // db에 bgm 저장
+    await supabase.from("bgm").insert(
+      normalizedPlaylist.map((item) => ({
+        title: item.title,
+        url: item.video_url,
+      }))
+    );
+
     onClose();
   };
 
@@ -121,20 +131,7 @@ export default function PlayerConfigDialog({
               className="flex gap-2 items-start p-4 border-2 rounded-lg"
             >
               <div className="flex-1 space-y-3">
-                <div>
-                  <label htmlFor={`title-${i}`} className="text-sm">
-                    제목
-                  </label>
-                  <Input
-                    id={`title-${i}`}
-                    value={item.title}
-                    onChange={(e) =>
-                      handleUpdateItem(i, "title", e.target.value)
-                    }
-                    placeholder="플레이리스트 제목 (선택사항)"
-                  />
-                </div>
-                <div>
+                <div className="flex flex-col gap-2">
                   <label htmlFor={`video-${i}`} className="text-sm">
                     비디오 링크<sup className="text-red-500">*</sup>
                   </label>
@@ -146,6 +143,20 @@ export default function PlayerConfigDialog({
                     }
                     placeholder="유튜브 동영상 링크 또는 동영상 ID"
                     required
+                    className="text-xs"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor={`title-${i}`} className="text-sm">
+                    제목
+                  </label>
+                  <Input
+                    id={`title-${i}`}
+                    value={item.title}
+                    onChange={(e) =>
+                      handleUpdateItem(i, "title", e.target.value)
+                    }
+                    placeholder="곡/플레이리스트 제목 (선택사항)"
                   />
                 </div>
               </div>
