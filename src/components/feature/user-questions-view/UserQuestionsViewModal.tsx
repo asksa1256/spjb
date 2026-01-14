@@ -29,7 +29,7 @@ const UserQuestionsViewModal = () => {
 
   // GA 이벤트 추적
   const handleClick = () => {
-    ReactGA.event("modal_open", {
+    ReactGA.event("user_questions_modal_open", {
       modal_name: "user_questions",
     });
   };

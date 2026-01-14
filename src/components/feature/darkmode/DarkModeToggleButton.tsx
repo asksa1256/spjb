@@ -20,7 +20,7 @@ export default function DarkModeToggleButton({ className }: Props) {
   const handleClick = () => {
     toggleTheme();
 
-    ReactGA.event("click", {
+    ReactGA.event("darkmode_toggle_click", {
       element: "darkmode_toggle_button",
       action: "다크 모드 토글",
     });

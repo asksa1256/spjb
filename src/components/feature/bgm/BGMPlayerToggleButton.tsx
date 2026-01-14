@@ -13,7 +13,7 @@ export default function BGMPlayerToggleButton({ showPlayer, onToggle }: Props) {
   const handleClick = () => {
     onToggle();
 
-    ReactGA.event("click", {
+    ReactGA.event("bgm_on_off_click", {
       element: "bgm_toggle_button",
       action: "BGM on/off",
     });

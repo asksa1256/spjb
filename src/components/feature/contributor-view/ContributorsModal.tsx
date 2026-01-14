@@ -52,7 +52,7 @@ const ContributorsModal = () => {
 
   // GA 이벤트 추적
   const handleContributorsClick = () => {
-    ReactGA.event("modal_open", {
+    ReactGA.event("contributors_modal_open", {
       modal_name: "Contributors",
     });
   };

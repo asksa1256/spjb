@@ -26,7 +26,7 @@ const NoticeModal = () => {
 
   // GA 이벤트 추적
   const handleNoticeClick = () => {
-    ReactGA.event("modal_open", {
+    ReactGA.event("notice_modal_open", {
       modal_name: "Notice",
     });
   };

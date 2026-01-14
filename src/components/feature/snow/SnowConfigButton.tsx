@@ -42,7 +42,7 @@ export default function SnowConfigButton({
 
   // GA 이벤트 추적
   const handleClick = () => {
-    ReactGA.event("modal_open", {
+    ReactGA.event("snow_config_modal_open", {
       modal_name: "눈 내리기 설정",
     });
   };
