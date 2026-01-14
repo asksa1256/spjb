@@ -35,6 +35,7 @@ const CreateQuizModal = () => {
       question: "",
       answer: "",
       nickname: "",
+      commentary: "",
     },
   });
 
@@ -46,10 +47,17 @@ const CreateQuizModal = () => {
           answer: data.answer,
           created_at: new Date().toISOString(),
           nickname: data.nickname || null,
+          commentary: data.commentary || null,
         },
       ]);
 
-      if (error) throw error;
+      if (error) {
+        // Postgres 중복 제약 조건 에러 (question + answer unique key)
+        if (error.code === "23505") {
+          toast.error("이미 등록된 문제입니다.");
+          return;
+        }
+      }
 
       toast.success("문제가 성공적으로 추가되었습니다!");
       queryClient.invalidateQueries({ queryKey: ["quiz", data.category] });
