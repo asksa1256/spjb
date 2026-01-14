@@ -26,11 +26,11 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
           key={`${quiz.answer}-${i}`}
           role="button"
           tabIndex={0}
+          className="flex flex-col sm:rounded-xl border border-border bg-background p-5 md:shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md cursor-pointer"
           onClick={() => copyToClipboard(quiz.answer || "")}
           onKeyDown={(e) => {
             if (e.key === "Enter") copyToClipboard(quiz.answer || "");
           }}
-          className="flex flex-col sm:rounded-xl border border-border bg-background p-5 md:shadow-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-md"
         >
           <h6 className="flex gap-2">
             <span className="text-md font-medium text-gray-500 mt-1.5">Q.</span>
@@ -50,7 +50,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
               {quiz.commentary && (
                 <>
                   <Popover>
-                    <PopoverTrigger>
+                    <PopoverTrigger onClick={(e) => e.stopPropagation()}>
                       <BookOpenText className="size-4 ml-1.5 text-foreground/50 xl:hidden" />
                     </PopoverTrigger>
                     <PopoverContent side="bottom">
@@ -58,7 +58,7 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
                     </PopoverContent>
                   </Popover>
                   <Tooltip>
-                    <TooltipTrigger>
+                    <TooltipTrigger onClick={(e) => e.stopPropagation()}>
                       <BookOpenText className="size-4 ml-1.5 text-foreground/50 hidden xl:block" />
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
