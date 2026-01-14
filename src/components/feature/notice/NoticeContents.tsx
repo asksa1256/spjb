@@ -21,7 +21,7 @@ const NoticeContents = () => {
     <Accordion type="single" collapsible className="w-full">
       <AccordionItem value="feat-snow-bgm">
         <AccordionTrigger className="text-base font-medium text-foreground">
-          검색, BGM 기능 개선 (2025.1.14.)
+          검색 기능 개선, &apos;문제 해설&apos; 추가 (2025.1.14.)
         </AccordionTrigger>
         <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
           <section className="mb-6 flex flex-col gap-2">
