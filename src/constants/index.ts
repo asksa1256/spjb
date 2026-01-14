@@ -5,7 +5,7 @@ export const CATEGORY = {
   GARO: "garo",
 };
 
-export const NOTICE_VERSION = "2025-12-14";
+export const NOTICE_VERSION = "2026-01-14";
 export const NOTICE_STORAGE_KEY = "lastCheckedNoticeVersion";
 
 export const PLAYLIST_STORAGE_KEY = "bgm_playlist";
