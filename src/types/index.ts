@@ -4,24 +4,28 @@ export type Record =
       answer: string | null;
       question: string | null;
       nickname?: string | string[] | null;
+      commentary?: string | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
       nickname?: string | string[] | null;
+      commentary?: string | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
       nickname?: string | string[] | null;
+      commentary?: string | null;
     }
   | {
       id?: number;
       answer: string | null;
       question: string | null;
       nickname?: string | string[] | null;
+      commentary?: string | null;
     };
 
 export type Records = Record[];

@@ -1,6 +1,17 @@
 import type { Records } from "@/types";
 import { highlightWords } from "@/lib/highlightWords";
 import { copyToClipboard } from "@/lib/copyToClipborad";
+import { BookOpenText } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 interface SearchResultsProps {
   results: Records;
@@ -36,6 +47,26 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
               <b className="rounded text-lg text-orange-500 px-2 py-1 bg-answer-background">
                 {quiz.answer}
               </b>
+              {quiz.commentary && (
+                <>
+                  <Popover>
+                    <PopoverTrigger>
+                      <BookOpenText className="size-4 ml-1.5 text-foreground/50 xl:hidden" />
+                    </PopoverTrigger>
+                    <PopoverContent side="bottom">
+                      {quiz.commentary}
+                    </PopoverContent>
+                  </Popover>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <BookOpenText className="size-4 ml-1.5 text-foreground/50 hidden xl:block" />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      해설: {quiz.commentary}
+                    </TooltipContent>
+                  </Tooltip>
+                </>
+              )}
             </h6>
 
             {quiz.nickname && (
