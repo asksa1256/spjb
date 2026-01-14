@@ -11,6 +11,15 @@ import { useState } from "react";
 import BGMPlayer from "./components/feature/bgm/BGMPlayer";
 import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 import useLocalStorage from "./hooks/useLocalStorage";
+import ReactGA from "react-ga4";
+
+const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
+
+if (process.env.NODE_ENV === "production" && GA_TRACKING_ID) {
+  ReactGA.initialize(GA_TRACKING_ID);
+} else if (process.env.NODE_ENV === "development") {
+  console.log("Google Analytics disabled in development");
+}
 
 export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
