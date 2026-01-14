@@ -1,3 +1,5 @@
+import type { Database } from "@/types/supabase";
+
 export type Record =
   | {
       id?: number;
@@ -27,6 +29,8 @@ export type Record =
       nickname?: string | string[] | null;
       commentary?: string | null;
     };
+
+export type TableNames = keyof Database["public"]["Tables"];
 
 export type Records = Record[];
 

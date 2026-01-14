@@ -1,7 +1,5 @@
 import supabase from "@/lib/supabase";
-import type { Database } from "@/types/supabase";
-
-type TableNames = keyof Database["public"]["Tables"];
+import type { TableNames } from "@/types";
 
 const getResults = async (ctg: TableNames) => {
   const { count } = await supabase
