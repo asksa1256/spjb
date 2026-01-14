@@ -174,10 +174,11 @@ export default function PlayerConfigDialog({
                     <Input
                       id={`title-${i}`}
                       value={item.title}
+                      placeholder="곡/플레이리스트 제목 (선택사항)"
+                      className="text-xs"
                       onChange={(e) =>
                         handleUpdateItem(i, "title", e.target.value)
                       }
-                      placeholder="곡/플레이리스트 제목 (선택사항)"
                     />
                   </div>
                 </div>
