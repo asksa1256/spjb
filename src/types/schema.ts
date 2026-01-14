@@ -38,6 +38,7 @@ export const quizFormSchema = z.object({
   question: z.string().min(1, "문제를 입력해주세요.").trim(),
   answer: z.string().min(1, "답을 입력해주세요.").trim(),
   nickname: z.string().optional(),
+  commentary: z.string().optional(),
 });
 
 export type QuizFormValues = z.infer<typeof quizFormSchema>;

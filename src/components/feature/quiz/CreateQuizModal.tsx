@@ -55,7 +55,7 @@ const CreateQuizModal = () => {
       queryClient.invalidateQueries({ queryKey: ["quiz", data.category] });
 
       // 성공 시 문제, 답 입력창 초기화 (카테고리, 닉네임은 유지)
-      reset({ ...data, question: "", answer: "" });
+      reset({ ...data, question: "", answer: "", commentary: "" });
     } catch (error) {
       const message =
         error instanceof Error ? error.message : "알 수 없는 오류 발생";
@@ -87,6 +87,7 @@ const CreateQuizModal = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-8">
+            {/* 카테고리 */}
             <div className="grid gap-2">
               <label
                 htmlFor="category"
@@ -111,6 +112,8 @@ const CreateQuizModal = () => {
                 </p>
               )}
             </div>
+
+            {/* 문제 */}
             <div className="grid gap-3">
               <label
                 htmlFor="question"
@@ -125,7 +128,7 @@ const CreateQuizModal = () => {
                   <Textarea
                     {...field}
                     id="question"
-                    placeholder="문제를 입력하세요"
+                    placeholder="문제를 입력해주세요."
                     className={errors.question ? "border-red-500" : ""}
                   />
                 )}
@@ -136,6 +139,8 @@ const CreateQuizModal = () => {
                 </p>
               )}
             </div>
+
+            {/* 답 */}
             <div className="grid gap-3">
               <label
                 htmlFor="answer"
@@ -150,7 +155,7 @@ const CreateQuizModal = () => {
                   <Textarea
                     {...field}
                     id="answer"
-                    placeholder="답을 입력하세요"
+                    placeholder="답을 입력해주세요."
                     className={errors.answer ? "border-red-500" : ""}
                   />
                 )}
@@ -159,6 +164,8 @@ const CreateQuizModal = () => {
                 <p className="text-xs text-red-500">{errors.answer.message}</p>
               )}
             </div>
+
+            {/* 닉네임 */}
             <div className="grid gap-3">
               <label
                 htmlFor="nickname"
@@ -175,6 +182,28 @@ const CreateQuizModal = () => {
                     id="nickname"
                     placeholder="Thanks to에 표시될 닉네임"
                     className="text-sm"
+                  />
+                )}
+              />
+            </div>
+
+            {/* 해설 */}
+            <div className="grid gap-3">
+              <label
+                htmlFor="answer"
+                className="text-sm text-foreground font-medium"
+              >
+                해설
+              </label>
+              <Controller
+                name="commentary"
+                control={control}
+                render={({ field }) => (
+                  <Textarea
+                    {...field}
+                    id="answer"
+                    placeholder="해설을 입력해주세요. (선택)"
+                    className={errors.answer ? "border-red-500" : ""}
                   />
                 )}
               />
