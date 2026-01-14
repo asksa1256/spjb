@@ -7,6 +7,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ReactGA from "react-ga4";
 
 interface Props {
   className?: string;
@@ -15,13 +16,24 @@ interface Props {
 export default function DarkModeToggleButton({ className }: Props) {
   const { theme, toggleTheme } = useTheme();
 
+  // GA 이벤트 추적
+  const handleClick = () => {
+    toggleTheme();
+
+    ReactGA.event({
+      category: "Modal",
+      action: "Open",
+      label: "Contributors",
+    });
+  };
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
         <Button
           type="button"
           size="icon"
-          onClick={toggleTheme}
+          onClick={handleClick}
           className={cn(
             "relative transition-colors duration-300 bg-transparent text-foreground",
             className
@@ -30,7 +42,7 @@ export default function DarkModeToggleButton({ className }: Props) {
           {/* 라이트 모드 */}
           <Sun
             className={`
-          size-5 transition-all duration-300 
+          size-5 transition-all duration-300
           ${
             theme === "dark"
               ? "rotate-90 scale-0 opacity-0"

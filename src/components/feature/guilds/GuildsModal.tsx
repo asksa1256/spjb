@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { type Guild } from "./GuildList";
 import { ShieldCheck } from "lucide-react";
+import ReactGA from "react-ga4";
 
 async function fetchGuilds(): Promise<Guild[]> {
   const { data, error } = await supabase
@@ -37,6 +38,15 @@ async function fetchGuilds(): Promise<Guild[]> {
 
 const GuildsModal = () => {
   const [open, setOpen] = useState(false);
+
+  // GA 이벤트 추적
+  const handleGuildsClick = () => {
+    ReactGA.event({
+      category: "Modal",
+      action: "Open",
+      label: "Guilds",
+    });
+  };
 
   const {
     data: guilds,
@@ -58,6 +68,7 @@ const GuildsModal = () => {
               variant="ghost"
               size="icon"
               className="w-auto mx-auto text-foreground"
+              onClick={handleGuildsClick}
             >
               <ShieldCheck className="size-5!" />
             </Button>

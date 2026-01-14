@@ -13,18 +13,19 @@ import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButto
 import useLocalStorage from "./hooks/useLocalStorage";
 import ReactGA from "react-ga4";
 
-const GA_TRACKING_ID = process.env.REACT_APP_GA_TRACKING_ID;
-
-if (process.env.NODE_ENV === "production" && GA_TRACKING_ID) {
-  ReactGA.initialize(GA_TRACKING_ID);
-} else if (process.env.NODE_ENV === "development") {
-  console.log("Google Analytics disabled in development");
-}
-
 export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
   const [showPlayer, setShowPlayer] = useLocalStorage("showPlayer", true);
+
+  const GA_TRACKING_ID = import.meta.env.REACT_APP_GA_TRACKING_ID;
+
+  // 개발 환경에서는 GA 비활성화
+  if (import.meta.env.NODE_ENV === "production" && GA_TRACKING_ID) {
+    ReactGA.initialize(GA_TRACKING_ID);
+  } else if (import.meta.env.NODE_ENV === "development") {
+    console.log("Google Analytics disabled in development");
+  }
 
   return (
     <div

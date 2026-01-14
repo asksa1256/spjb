@@ -21,6 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { type Contributors } from "@/types";
+import ReactGA from "react-ga4";
 
 async function fetchContributors(): Promise<Contributors[]> {
   const { data, error } = await supabase
@@ -49,6 +50,15 @@ const ContributorsModal = () => {
     gcTime: Infinity,
   });
 
+  // GA 이벤트 추적
+  const handleContributorsClick = () => {
+    ReactGA.event({
+      category: "Modal",
+      action: "Open",
+      label: "Contributors",
+    });
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Tooltip>
@@ -58,6 +68,7 @@ const ContributorsModal = () => {
               variant="ghost"
               size="icon"
               className="w-auto mx-auto text-foreground"
+              onClick={handleContributorsClick}
             >
               <Heart className="size-5!" />
             </Button>

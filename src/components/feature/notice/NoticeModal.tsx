@@ -19,9 +19,19 @@ import {
 import NoticeContents from "./NoticeContents";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { NOTICE_STORAGE_KEY, NOTICE_VERSION } from "@/constants";
+import ReactGA from "react-ga4";
 
 const NoticeModal = () => {
   const [open, setOpen] = useState(false);
+
+  // GA 이벤트 추적
+  const handleNoticeClick = () => {
+    ReactGA.event({
+      category: "Modal",
+      action: "Open",
+      label: "Notice",
+    });
+  };
 
   const [lastCheckedVersion, setLastCheckedVersion] = useLocalStorage<
     string | null
@@ -47,6 +57,7 @@ const NoticeModal = () => {
               variant="ghost"
               size="icon"
               className="relative w-auto mx-auto text-foreground"
+              onClick={handleNoticeClick}
             >
               <Megaphone className="size-5!" />
               {hasUnread && (

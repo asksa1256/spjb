@@ -19,6 +19,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import ReactGA from "react-ga4";
 
 export default function BGMPlayer({ className }: { className?: string }) {
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([]);
@@ -177,6 +178,17 @@ export default function BGMPlayer({ className }: { className?: string }) {
     } as React.CSSProperties);
   }, [currentIdx, playlist]);
 
+  // GA 이벤트 추적
+  const handleBGMConfigClick = () => {
+    setIsDialogOpen(true);
+
+    ReactGA.event({
+      category: "Modal",
+      action: "Open",
+      label: "BGM Config",
+    });
+  };
+
   return (
     <section
       className={cn(
@@ -282,8 +294,8 @@ export default function BGMPlayer({ className }: { className?: string }) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setIsDialogOpen(true)}
                 className="hover:bg-background/10 ml-2"
+                onClick={handleBGMConfigClick}
               >
                 <Settings className="size-4 text-foreground" />
               </Button>
