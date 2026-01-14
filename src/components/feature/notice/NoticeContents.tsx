@@ -4,6 +4,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { TriangleAlert } from "lucide-react";
 import GuildBtnImg from "@/assets/images/guild-btn.png";
 import GuildFormImg from "@/assets/images/guild-form.png";
 import GuildModalImg from "@/assets/images/guilds-modal.png";
@@ -11,11 +12,59 @@ import SnowConfigImg from "@/assets/images/snow-config.png";
 import SnowLightImg from "@/assets/images/snow-light.png";
 import SnowDarkImg from "@/assets/images/snow-dark.png";
 import BgmOnImg from "@/assets/images/bgm-on.png";
+import CommentaryFieldImg from "@/assets/images/commentary-field.png";
+import CommentaryImg from "@/assets/images/commentary.png";
+import BGMConfigButtonImg from "@/assets/images/bgm-config-btn.png";
 
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
-      <AccordionItem value="item-2">
+      <AccordionItem value="feat-snow-bgm">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          검색, BGM 기능 개선 (2025.1.14.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) 검색 시 공백 구분 제거</h4>
+            <p>이제 검색 시 띄어쓰기를 하지 않아도 동일한 결과가 제공됩니다.</p>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">2) 해설 추가</h4>
+            <p>
+              문제 등록 시 &apos;문제 해설&apos;을 선택적으로 입력하실 수
+              있습니다.
+            </p>
+            <figure>
+              <img src={CommentaryFieldImg} alt="문제 해설 입력 필드 이미지" />
+            </figure>
+            <p className="text-sm">
+              해설이 포함된 문제는 검색 결과에서 아래와 같이 나타납니다.
+            </p>
+            <figure>
+              <img src={CommentaryImg} alt="문제 해설 툴팁 이미지" />
+            </figure>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">3) BGM 추가</h4>
+            <p>이제 플레이리스트에 원하는 BGM을 추가하실 수 있습니다.</p>
+            <figure>
+              <img src={BGMConfigButtonImg} alt="bgm 편집 버튼 이미지" />
+            </figure>
+            <p className="text-sm text-foreground/50 flex items-center gap-1">
+              <TriangleAlert className="size-3" /> BGM은 유튜브 동영상 링크만
+              지원됩니다.
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">감사합니다.</p>
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="feat-snow-bgm">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "눈 내리기, 배경음악" 기능 업데이트 (2025.12.14.)
         </AccordionTrigger>
@@ -79,7 +128,7 @@ const NoticeContents = () => {
         </AccordionContent>
       </AccordionItem>
 
-      <AccordionItem value="item-1">
+      <AccordionItem value="feat-guild-promotion">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "길드 홍보" 기능 업데이트 (2025.12.01.)
         </AccordionTrigger>
