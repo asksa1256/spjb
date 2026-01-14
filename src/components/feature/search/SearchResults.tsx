@@ -53,7 +53,10 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
                     <PopoverTrigger onClick={(e) => e.stopPropagation()}>
                       <BookOpenText className="size-4 ml-1.5 text-foreground/50 xl:hidden" />
                     </PopoverTrigger>
-                    <PopoverContent side="bottom">
+                    <PopoverContent
+                      side="bottom"
+                      className="text-xs max-h-[72px] overflow-y-auto max-w-60 md:max-w-[320px]"
+                    >
                       {quiz.commentary}
                     </PopoverContent>
                   </Popover>
@@ -61,7 +64,10 @@ const SearchResults = ({ results, keyword }: SearchResultsProps) => {
                     <TooltipTrigger onClick={(e) => e.stopPropagation()}>
                       <BookOpenText className="size-4 ml-1.5 text-foreground/50 hidden xl:block" />
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">
+                    <TooltipContent
+                      side="bottom"
+                      className="text-xs max-h-[72px] overflow-y-auto max-w-60 md:max-w-[320px]"
+                    >
                       해설: {quiz.commentary}
                     </TooltipContent>
                   </Tooltip>
