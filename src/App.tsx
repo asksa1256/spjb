@@ -12,6 +12,7 @@ import BGMPlayer from "./components/feature/bgm/BGMPlayer";
 import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 import useLocalStorage from "./hooks/useLocalStorage";
 import ReactGA from "react-ga4";
+import UserQuestionsViewModal from "./components/feature/user-questions-view/UserQuestionsViewModal";
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 
@@ -82,6 +83,9 @@ export default function App() {
         onChangeShow={setShowSnow}
         onChangeCount={(v) => setSnowflakeCount(v[0])}
       />
+
+      {/* 유저 출제 문제 */}
+      <UserQuestionsViewModal />
 
       {/* Vercel Analytics */}
       <Analytics />

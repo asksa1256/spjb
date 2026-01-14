@@ -1,11 +1,8 @@
 import { getChosung, isChosung } from "@/lib/getChosung";
-import type { Database } from "@/types/supabase";
 import createSearchRegex from "./createSearchRegex";
+import type { Records } from "@/types";
 
-type TableNames = keyof Database["public"]["Tables"];
-type Record = Database["public"]["Tables"][TableNames]["Row"];
-
-const filterResults = (results: Record[], keyword: string) => {
+const filterResults = (results: Records, keyword: string) => {
   const trimmedKeyword = keyword.trim();
   if (!trimmedKeyword || trimmedKeyword.length < 2) return [];
 
