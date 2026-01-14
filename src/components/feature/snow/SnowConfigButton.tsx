@@ -10,6 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { type Dispatch, type SetStateAction, useRef, useEffect } from "react";
 import debounce from "@/lib/debounce";
+import ReactGA from "react-ga4";
 
 interface SnowConfigs {
   showSnow: boolean;
@@ -39,12 +40,20 @@ export default function SnowConfigButton({
     };
   }, [debouncedChangeCount]);
 
+  // GA 이벤트 추적
+  const handleClick = () => {
+    ReactGA.event("modal_open", {
+      modal_name: "눈 내리기 설정",
+    });
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button
           type="button"
           size="icon"
+          onClick={handleClick}
           className={cn(
             "fixed z-1 left-6 bottom-22 transition-colors bg-background rounded-full shadow-sm p-6 hover:bg-blue-100 hover:text-blue-500",
             {

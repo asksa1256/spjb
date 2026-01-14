@@ -182,10 +182,8 @@ export default function BGMPlayer({ className }: { className?: string }) {
   const handleBGMConfigClick = () => {
     setIsDialogOpen(true);
 
-    ReactGA.event({
-      category: "Modal",
-      action: "Open",
-      label: "BGM Config",
+    ReactGA.event("modal_open", {
+      modal_name: "BGM 설정",
     });
   };
 

@@ -41,10 +41,8 @@ const GuildsModal = () => {
 
   // GA 이벤트 추적
   const handleGuildsClick = () => {
-    ReactGA.event({
-      category: "Modal",
-      action: "Open",
-      label: "Guilds",
+    ReactGA.event("modal_open", {
+      modal_name: "Guilds",
     });
   };
 

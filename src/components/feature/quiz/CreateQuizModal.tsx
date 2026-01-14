@@ -19,7 +19,6 @@ import { Plus } from "lucide-react";
 import { quizFormSchema, type QuizFormValues } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
-import ReactGA from "react-ga4";
 
 const CreateQuizModal = () => {
   const queryClient = useQueryClient();
@@ -38,15 +37,6 @@ const CreateQuizModal = () => {
       nickname: "",
     },
   });
-
-  // GA 이벤트 추적
-  const handleCreateQuizClick = () => {
-    ReactGA.event({
-      category: "Modal",
-      action: "Open",
-      label: "Create Quiz",
-    });
-  };
 
   const onSubmit = async (data: QuizFormValues) => {
     try {
@@ -81,7 +71,6 @@ const CreateQuizModal = () => {
           variant="outline"
           size="lg"
           className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
-          onClick={handleCreateQuizClick}
         >
           <Plus className="-mr-1" />
           문제 등록하기

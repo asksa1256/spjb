@@ -20,7 +20,6 @@ if (import.meta.env.PROD && GA_TRACKING_ID) {
   ReactGA.initialize(GA_TRACKING_ID);
 } else if (import.meta.env.DEV) {
   console.log("Google Analytics disabled in development");
-  ReactGA.initialize(GA_TRACKING_ID);
 }
 
 export default function App() {
