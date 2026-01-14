@@ -116,11 +116,15 @@ export default function PlayerConfigDialog({
     onSave(normalizedPlaylist);
 
     // db에 bgm 저장
-    await supabase.from("bgm").insert(
+    await supabase.from("bgm").upsert(
       normalizedPlaylist.map((item) => ({
         title: item.title,
         url: item.video_url,
-      }))
+      })),
+      {
+        onConflict: "title,url",
+        ignoreDuplicates: true,
+      }
     );
 
     onClose();
