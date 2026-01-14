@@ -4,15 +4,13 @@ import { Input } from "@/components/ui/input";
 import CategorySelect from "@/components/feature/search/CategorySelect";
 import debounce from "@/lib/debounce";
 import SearchResults from "@/components/feature/search/SearchResults";
-import type { Database } from "@/types/supabase";
 import type { Category } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import LoadingDots from "@/components/ui/LoadingDots";
 import { copyToClipboard } from "@/lib/copyToClipborad";
 import filterResults from "@/lib/filterResults";
 import getResults from "@/api/getResults";
-
-type TableNames = keyof Database["public"]["Tables"];
+import type { TableNames } from "@/types";
 
 const SearchContainer = () => {
   const [keyword, setKeyword] = useState("");
