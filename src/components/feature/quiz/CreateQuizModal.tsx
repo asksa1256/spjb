@@ -78,7 +78,7 @@ const CreateQuizModal = () => {
         <Button
           variant="outline"
           size="lg"
-          className="w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
+          className="z-1 w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
         >
           <Plus className="-mr-1" />
           문제 등록하기
