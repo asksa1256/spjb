@@ -11,10 +11,9 @@ import {
 } from "@/components/ui/dialog";
 import { Heart } from "lucide-react";
 import supabase from "@/lib/supabase";
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import ContributorList from "@/components/feature/contributor-view/ContributorList";
 import { useQuery } from "@tanstack/react-query";
-import CreateQuizModal from "@/components/feature/quiz/CreateQuizModal";
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +21,9 @@ import {
 } from "@/components/ui/tooltip";
 import { type Contributors } from "@/types";
 import ReactGA from "react-ga4";
+
+const CreateQuizModal = lazy(() => import("@/components/feature/quiz/CreateQuizModal"));
+
 
 async function fetchContributors(): Promise<Contributors[]> {
   const { data, error } = await supabase
@@ -96,8 +98,11 @@ const ContributorsModal = () => {
             <p className="text-center text-muted-foreground text-sm">
               👇 심플족보의 첫번째 기여자 되기 👇
             </p>
-            <CreateQuizModal />
+            <Suspense fallback={null}>
+              <CreateQuizModal />
+            </Suspense>
           </div>
+
         )}
 
         <DialogFooter>

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, lazy, Suspense } from "react";
 import {
   Play,
   Pause,
@@ -11,8 +11,9 @@ import { Button } from "@/components/ui/button";
 import YouTube, { type YouTubePlayer } from "react-youtube";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
-import PlayerConfigDialog from "./PlayerConfigDialog";
 import { type PlaylistItem } from "./PlayerConfigDialog";
+const PlayerConfigDialog = lazy(() => import("./PlayerConfigDialog"));
+
 import { PLAYLIST_STORAGE_KEY } from "@/constants";
 import {
   Tooltip,
@@ -303,12 +304,15 @@ export default function BGMPlayer({ className }: { className?: string }) {
         </div>
       </div>
 
-      <PlayerConfigDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        playlist={playlist}
-        onSave={handleSavePlaylist}
-      />
+      <Suspense fallback={null}>
+        <PlayerConfigDialog
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+          playlist={playlist}
+          onSave={handleSavePlaylist}
+        />
+      </Suspense>
+
     </section>
   );
 }

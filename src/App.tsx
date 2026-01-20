@@ -1,18 +1,21 @@
 import { Toaster } from "sonner";
-import CreateQuizModal from "./components/feature/quiz/CreateQuizModal";
-import SearchContainer from "./components/feature/search/SearchContainer";
 import { Analytics } from "@vercel/analytics/react";
 import Header from "@/components/ui/Header";
 import Footer from "./components/ui/Footer";
 import ToTopButton from "./components/ui/ToTopButton";
-import SnowFall from "react-snowfall";
 import SnowConfigButton from "./components/feature/snow/SnowConfigButton";
-import { useState } from "react";
-import BGMPlayer from "./components/feature/bgm/BGMPlayer";
+import { useState, lazy, Suspense } from "react";
 import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 import useLocalStorage from "./hooks/useLocalStorage";
 import ReactGA from "react-ga4";
-import UserQuestionsViewModal from "./components/feature/user-questions-view/UserQuestionsViewModal";
+
+// Lazy loaded components
+const CreateQuizModal = lazy(() => import("./components/feature/quiz/CreateQuizModal"));
+const SearchContainer = lazy(() => import("./components/feature/search/SearchContainer"));
+const BGMPlayer = lazy(() => import("./components/feature/bgm/BGMPlayer"));
+const UserQuestionsViewModal = lazy(() => import("./components/feature/user-questions-view/UserQuestionsViewModal"));
+const SnowFall = lazy(() => import("react-snowfall"));
+
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 
@@ -38,19 +41,24 @@ export default function App() {
     `}
     >
       {showSnow && (
-        <SnowFall
-          color="white"
-          radius={[0.5, 5.0]}
-          snowflakeCount={snowflakeCount}
-          opacity={[0.5, 1]}
-        />
+        <Suspense fallback={null}>
+          <SnowFall
+            color="white"
+            radius={[0.5, 5.0]}
+            snowflakeCount={snowflakeCount}
+            opacity={[0.5, 1]}
+          />
+        </Suspense>
       )}
+
 
       <Header />
 
       <main>
         <section className="flex flex-col w-full items-center justify-start max-w-[640px]">
-          <SearchContainer />
+          <Suspense fallback={<div className="h-20 w-full animate-pulse bg-gray-200 rounded-lg" />}>
+            <SearchContainer />
+          </Suspense>
 
           <Toaster
             position="bottom-center"
@@ -60,12 +68,19 @@ export default function App() {
             }}
           />
 
-          <CreateQuizModal />
+          <Suspense fallback={null}>
+            <CreateQuizModal />
+          </Suspense>
         </section>
 
         {/* 배경음악 */}
-        {showPlayer && <BGMPlayer className="mt-12" />}
+        {showPlayer && (
+          <Suspense fallback={null}>
+            <BGMPlayer className="mt-12" />
+          </Suspense>
+        )}
       </main>
+
 
       <Footer />
 
@@ -85,7 +100,10 @@ export default function App() {
       />
 
       {/* 유저 출제 문제 */}
-      <UserQuestionsViewModal />
+      <Suspense fallback={null}>
+        <UserQuestionsViewModal />
+      </Suspense>
+
 
       {/* Vercel Analytics */}
       <Analytics />
