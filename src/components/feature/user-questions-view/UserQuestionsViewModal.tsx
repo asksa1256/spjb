@@ -99,28 +99,28 @@ const UserQuestionsViewModal = () => {
                       key={idx}
                       className="py-3 border-b last:border-0 break-keep"
                     >
-                      <p className="text-sm">
+                      <div className="text-sm">
                         <div className="flex gap-1">
                           <span className="text-foreground/50">Q.</span>{" "}
                           <p className="text-foreground/80">{item.question}</p>
                         </div>
-                      </p>
-                      <p className="text-sm">
+                      </div>
+                      <div className="text-sm">
                         <div className="flex gap-1">
                           <span className="text-foreground/50">A.</span>{" "}
                           <b className="text-blue-600">
                             {item.answer}{" "}
                             {item.nickname && (
                               <span className="ml-1 text-foreground/50 text-xs font-normal">
-                                (등록: {item.nickname})
+                                (제보: {item.nickname})
                               </span>
                             )}
                           </b>
                         </div>
-                      </p>
+                      </div>
                       {item.commentary && (
                         <details className="mt-1 text-xs text-foreground/50">
-                          <summary>해설</summary>
+                          <summary className="cursor-pointer">해설</summary>
                           <p>{item.commentary}</p>
                         </details>
                       )}
@@ -136,7 +136,7 @@ const UserQuestionsViewModal = () => {
           </div>
         </Tabs>
 
-        <DialogFooter className="p-4 border-t bg-background">
+        <DialogFooter className="p-4 border-t">
           <DialogClose asChild>
             <Button variant="outline" className="w-full sm:w-auto">
               닫기
