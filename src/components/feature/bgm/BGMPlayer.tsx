@@ -1,4 +1,11 @@
-import { useState, useCallback, useRef, useEffect, lazy, Suspense } from "react";
+import {
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+  lazy,
+  Suspense,
+} from "react";
 import {
   Play,
   Pause,
@@ -8,19 +15,19 @@ import {
   Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import YouTube, { type YouTubePlayer } from "react-youtube";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
-import { type PlaylistItem } from "./PlayerConfigDialog";
-const PlayerConfigDialog = lazy(() => import("./PlayerConfigDialog"));
-
 import { PLAYLIST_STORAGE_KEY } from "@/constants";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import YouTube, { type YouTubePlayer } from "react-youtube";
+import { type PlaylistItem } from "./PlayerConfigDialog";
+const PlayerConfigDialog = lazy(() => import("./PlayerConfigDialog"));
 import ReactGA from "react-ga4";
+import { formatTime } from "@/lib/formatters";
 
 export default function BGMPlayer({ className }: { className?: string }) {
   const [playlist, setPlaylist] = useState<PlaylistItem[]>([]);
@@ -33,6 +40,45 @@ export default function BGMPlayer({ className }: { className?: string }) {
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const lastLoadedIdRef = useRef<string>(""); // 마지막으로 로드된 비디오 ID를 ref로 관리
+
+  // 타임라인 관련 상태
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
+
+  const timeUpdateIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // 현재 재생 시간 업데이트
+  useEffect(() => {
+    if (isPlaying && playerRef.current && !isSeeking) {
+      timeUpdateIntervalRef.current = setInterval(() => {
+        const time = playerRef.current?.getCurrentTime();
+        if (typeof time === "number") {
+          setCurrentTime(time);
+        }
+      }, 100);
+    } else {
+      if (timeUpdateIntervalRef.current) {
+        clearInterval(timeUpdateIntervalRef.current);
+        timeUpdateIntervalRef.current = null;
+      }
+    }
+
+    return () => {
+      if (timeUpdateIntervalRef.current) {
+        clearInterval(timeUpdateIntervalRef.current);
+      }
+    };
+  }, [isPlaying, isSeeking]);
+
+  // 타임라인 시크
+  const handleSeek = (value: number[]) => {
+    const newTime = value[0];
+    setCurrentTime(newTime);
+    if (playerRef.current) {
+      playerRef.current.seekTo(newTime, true);
+    }
+  };
 
   // 마운트 시 로컬스토리지 플레이리스트 불러오기
   useEffect(() => {
@@ -50,10 +96,14 @@ export default function BGMPlayer({ className }: { className?: string }) {
     }
   }, []);
 
-  const onReady = (e: { target: YouTubePlayer }) => {
+  const onReady = async (e: { target: YouTubePlayer }) => {
     playerRef.current = e.target;
     e.target.setVolume(volume);
     setIsReady(true);
+
+    // 비디오 길이(타임라인) 가져오기
+    const dur = await e.target.getDuration();
+    setDuration(dur);
   };
 
   const playVideo = () => {
@@ -81,9 +131,12 @@ export default function BGMPlayer({ className }: { className?: string }) {
   }, []);
 
   const onStateChange = useCallback(
-    (e: { data: number }) => {
+    async (e: { data: number }) => {
       if (e.data === 1) {
         setIsPlaying(true);
+        // 재생 시작 시 duration 업데이트
+        const dur = await playerRef.current?.getDuration();
+        if (dur) setDuration(dur);
       }
       if (e.data === 0) {
         if (playlist.length > 1) {
@@ -94,7 +147,7 @@ export default function BGMPlayer({ className }: { className?: string }) {
         setIsPlaying(false);
       }
     },
-    [playNext, playlist.length]
+    [playNext, playlist.length],
   );
 
   const handleSavePlaylist = (newPlaylist: PlaylistItem[]) => {
@@ -104,7 +157,7 @@ export default function BGMPlayer({ className }: { className?: string }) {
 
     // 새 리스트에서 기존 곡 인덱스
     const newIdx = newPlaylist.findIndex(
-      (item) => item.video_id === currentVideoId
+      (item) => item.video_id === currentVideoId,
     );
 
     if (newIdx !== -1) {
@@ -148,6 +201,15 @@ export default function BGMPlayer({ className }: { className?: string }) {
       playerRef.current.loadVideoById(videoId);
       lastLoadedIdRef.current = videoId; // 로드 완료 -> 마지막 로드 곡을 현재 재생 중인 곡으로 업데이트
       setIsPlaying(true);
+
+      // 새 비디오 로드 시 현재 타임라인 시간 초기화, duration 업데이트
+      setCurrentTime(0);
+      setTimeout(() => {
+        const dur = playerRef.current?.getDuration() as unknown as number; // YouTubePlayer 타입과 달리 실제 런타임에서는 getDuration()이 숫자를 즉시 반환(Promise 아님)하므로 타입 강제 단언.
+        if (typeof dur === "number" && dur > 0) {
+          setDuration(dur);
+        }
+      }, 500);
     } catch (e) {
       console.error("비디오 로드 실패: ", e);
     }
@@ -192,7 +254,7 @@ export default function BGMPlayer({ className }: { className?: string }) {
     <section
       className={cn(
         "p-4 bg-gradient-to-br from-purple-300/20 to-blue-300/20 rounded-lg text-foreground",
-        className
+        className,
       )}
     >
       <YouTube
@@ -218,12 +280,35 @@ export default function BGMPlayer({ className }: { className?: string }) {
               style={marqueeStyle}
               className={cn(
                 "block whitespace-nowrap text-center",
-                isOverflow && "animate-marquee"
+                isOverflow && "animate-marquee",
               )}
             >
               {playlist.length > 0
                 ? playlist[currentIdx]?.title || "Untitled"
                 : "플레이리스트를 추가해주세요."}
+            </span>
+          </div>
+        </div>
+
+        {/* 타임라인 */}
+        <div className="w-full px-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-foreground min-w-[35px]">
+              {formatTime(currentTime)}
+            </span>
+            <Slider
+              min={0}
+              max={duration || 100}
+              step={0.1}
+              value={[currentTime]}
+              onValueChange={handleSeek}
+              onPointerDown={() => setIsSeeking(true)}
+              onPointerUp={() => setIsSeeking(false)}
+              className="flex-1"
+              disabled={!isReady || duration === 0}
+            />
+            <span className="text-xs font-mono text-foreground min-w-[35px]">
+              {formatTime(duration)}
             </span>
           </div>
         </div>
@@ -312,7 +397,6 @@ export default function BGMPlayer({ className }: { className?: string }) {
           onSave={handleSavePlaylist}
         />
       </Suspense>
-
     </section>
   );
 }
