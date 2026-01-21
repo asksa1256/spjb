@@ -13,7 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import supabase from "@/lib/supabase";
-import { sanitize } from "@/lib/sanitize";
 import { Input } from "@/components/ui/input";
 import { BadgeQuestionMark } from "lucide-react";
 import {
@@ -44,7 +43,7 @@ const CreateInquiryModal = () => {
         {
           inquiry,
           contact,
-          nickname: sanitize(nickname.trim()),
+          nickname: nickname.trim(),
           created_at: createdAt,
         },
       ]);

@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type GuildFormData, guildSchema } from "@/types/schema";
 import { Button } from "@/components/ui/button";
-import { sanitize } from "@/lib/sanitize";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -48,12 +47,12 @@ export default function GuildPromotionForm({
       const { data: existingGuild } = await supabase
         .from("guilds")
         .select("name")
-        .eq("name", sanitize(data.name))
+        .eq("name", data.name)
         .single();
 
       if (existingGuild) {
         throw new Error(
-          "이미 홍보한 길드입니다. 홍보 메시지 수정이나 삭제는 관리자에게 문의해주세요!"
+          "이미 홍보한 길드입니다. 홍보 메시지 수정이나 삭제는 관리자에게 문의해주세요!",
         );
       }
 
@@ -80,9 +79,9 @@ export default function GuildPromotionForm({
       const { data: insertedData, error } = await supabase
         .from("guilds")
         .insert({
-          name: sanitize(data.name),
+          name: data.name,
           image: urlData.publicUrl,
-          bio: sanitize(data.bio),
+          bio: data.bio,
         })
         .select();
 
