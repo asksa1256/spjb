@@ -17,7 +17,7 @@ const SearchContainer = () => {
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const debouncedSetKeyword = useMemo(
     () => debounce((v: string) => setDebouncedKeyword(v), 500),
-    []
+    [],
   );
   const [category, setCategory] = useState<Category | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +35,7 @@ const SearchContainer = () => {
 
   const filteredResults = useMemo(
     () => filterResults(results, debouncedKeyword),
-    [results, debouncedKeyword]
+    [results, debouncedKeyword],
   );
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +102,7 @@ const SearchContainer = () => {
           <CategorySelect
             id="category"
             value={category || ""}
+            className="border-0 shadow-none rounded-full"
             onChange={handleChangeCategory}
           />
 
