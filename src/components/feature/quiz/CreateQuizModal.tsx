@@ -110,6 +110,7 @@ const CreateQuizModal = () => {
                   <CategorySelect
                     id="category"
                     value={field.value}
+                    className={errors.category ? "border-red-500" : ""}
                     onChange={field.onChange}
                   />
                 )}
@@ -201,7 +202,7 @@ const CreateQuizModal = () => {
                 htmlFor="answer"
                 className="text-sm text-foreground font-medium"
               >
-                해설
+                해설 <span className="text-gray-400">(선택)</span>
               </label>
               <Controller
                 name="commentary"
@@ -210,8 +211,7 @@ const CreateQuizModal = () => {
                   <Textarea
                     {...field}
                     id="answer"
-                    placeholder="해설을 입력해주세요. (선택)"
-                    className={errors.answer ? "border-red-500" : ""}
+                    placeholder="해설을 입력해주세요."
                   />
                 )}
               />
