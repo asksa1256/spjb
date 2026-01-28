@@ -1,34 +1,54 @@
-## 🔍 쉽고 빠른 문제 검색, 대충족보
+## 🔍 쉽고 빠른 문제 검색, 심플족보
 > 카테고리별 1~2만개 이상의 퀴즈 데이터에서 키워드 입력으로 빠르게 문제와 답을 찾아보세요!
+
 - 09/24 업데이트: 검색 속도 개선
   - 카테고리 선택 시 전체 데이터를 미리 받아놓음으로써 검색 속도가 빨라졌습니다.
 
-  - 업데이트 전
+    - Before:
 
     ![업데이트전](https://github.com/user-attachments/assets/146344a5-98b8-4fae-adb4-b3fcb4d0eb50)
 
-  - 업데이트 후
+    - After:
   
     ![업데이트후](https://github.com/user-attachments/assets/9704e87d-6228-4e4d-b96f-4aeb79c5c829)
+
+
+- 11/24 업데이트: UI/UX 리뉴얼
+  - 문제 카테고리 영역과 검색어 입력 필드 영역을 한 줄로 합치고, 크기를 키워서 더 직관적인 검색이 가능하도록 변경했습니다.
+    <img src="https://github.com/user-attachments/assets/6d8f327c-cb94-4615-80e3-8b23d1f78c71" alt="리뉴얼 미리보기" width="250" />
 
 
 ## ⭐ 주요 기능
 - 문제 검색
 - 문제 등록
+- 다크 모드
+- BGM Player
 
 
 ## 🔮 React + TypeScript + Vite
-> 개발 서버 실행: `npm run dev`
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
 
 
 ## 📚 STACKS
 <div align=left>
   <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
   <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
+  <img src="https://img.shields.io/badge/react hook form-EC5990?style=for-the-badge&logo=reacthookform&logoColor=black">
+  <img src="https://img.shields.io/badge/zod-408AFF?style=for-the-badge&logo=zod&logoColor=white">
+  <img src="https://img.shields.io/badge/TanStack Query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
   <img src="https://img.shields.io/badge/tailwindcss-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white">
   <img src="https://img.shields.io/badge/supabase-3FCF8E?style=for-the-badge&logo=supabase&logoColor=white">
   <img src="https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
   <img src="https://img.shields.io/badge/shadcn/ui-000000?style=for-the-badge&logo=shadcnui&logoColor=white">
+  <a href="https://github.com/tjallingt/react-youtube" target="_blank">
+    <img src="https://img.shields.io/badge/react%20youtube-%23FF0000.svg?style=for-the-badge&logo=youtube&logoColor=white" />
+  </a>
 </div>
 
 ## Contribute
