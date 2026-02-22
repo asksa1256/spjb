@@ -15,10 +15,38 @@ import BgmOnImg from "@/assets/images/bgm-on.png";
 import CommentaryFieldImg from "@/assets/images/commentary-field.png";
 import CommentaryImg from "@/assets/images/commentary.png";
 import BGMConfigButtonImg from "@/assets/images/bgm-config-btn.png";
+import { AppWindow } from "lucide-react";
 
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="feat-popup-mode">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "팝업창 모드" 업데이트 (2026.02.22.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) 팝업창 모드 추가</h4>
+            <p>
+              우측 상단의 윈도우 창 아이콘(<AppWindow className="size-5 inline-block" />)을 클릭하면 심플족보를 팝업창 모드(모바일 화면 비율)로 띄울 수 있습니다.
+            </p>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">2) 중복 답 복사 기능 추가</h4>
+            <p>
+              검색 결과가 1개이거나, 결과가 여러 개이더라도 정답이 동일할 경우 답이 자동 복사됩니다. (꽁꽁 퀴즈만 해당)
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">
+            감사합니다.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="feat-snow-bgm">
         <AccordionTrigger className="text-base font-medium text-foreground">
           검색 기능 개선, &apos;문제 해설&apos; 추가 (2025.1.14.)

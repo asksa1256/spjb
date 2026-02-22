@@ -138,7 +138,7 @@ const UserQuestionsViewModal = () => {
 
         <DialogFooter className="p-4 border-t">
           <DialogClose asChild>
-            <Button variant="outline" className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto max-h-[38px]">
               닫기
             </Button>
           </DialogClose>

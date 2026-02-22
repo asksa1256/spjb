@@ -8,6 +8,17 @@ export function useTheme() {
     const initial = stored ?? "light";
     document.documentElement.classList.toggle("dark", initial === "dark");
     setTheme(initial);
+
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "theme") {
+        const newTheme = (e.newValue as "dark" | "light" | null) ?? "light";
+        document.documentElement.classList.toggle("dark", newTheme === "dark");
+        setTheme(newTheme);
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const toggleTheme = () => {
