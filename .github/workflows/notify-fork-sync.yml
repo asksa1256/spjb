@@ -11,7 +11,7 @@ jobs:
       - name: Trigger fork sync
         run: |
           curl -X POST \
-            -H "Authorization: token ${{ secrets.FORK_SYNC_PAT }}" \
+            -H "Authorization: token ${{ secrets.SPJB_FORK_SYNC_PAT }}" \
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/repos/didi1129/spjb/dispatches \
             -d '{"event_type":"sync-from-upstream"}'
