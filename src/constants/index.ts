@@ -10,6 +10,8 @@ export const NOTICE_STORAGE_KEY = "lastCheckedNoticeVersion";
 
 export const PLAYLIST_STORAGE_KEY = "bgm_playlist";
 
+export const NOTICE_MODAL_HIDDEN_KEY = "hideWelcomeModal";
+
 export const SIMILAR_CHARS: Record<string, string> = {
   o: "[oO0○]",
   O: "[oO0○]",

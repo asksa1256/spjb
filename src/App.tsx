@@ -14,6 +14,7 @@ const CreateQuizModal = lazy(() => import("./components/feature/quiz/CreateQuizM
 const SearchContainer = lazy(() => import("./components/feature/search/SearchContainer"));
 const BGMPlayer = lazy(() => import("./components/feature/bgm/BGMPlayer"));
 const UserQuestionsViewModal = lazy(() => import("./components/feature/user-questions-view/UserQuestionsViewModal"));
+const AnnouncementModal = lazy(() => import("./components/feature/notice/AnnouncementModal"));
 const SnowFall = lazy(() => import("react-snowfall"));
 
 
@@ -102,6 +103,11 @@ export default function App() {
       {/* 유저 출제 문제 */}
       <Suspense fallback={null}>
         <UserQuestionsViewModal />
+      </Suspense>
+
+      {/* 임시 공지 */}
+      <Suspense fallback={null}>
+        <AnnouncementModal />
       </Suspense>
 
 
