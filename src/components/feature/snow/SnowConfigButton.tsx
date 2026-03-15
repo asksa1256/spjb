@@ -11,6 +11,11 @@ import { Switch } from "@/components/ui/switch";
 import { type Dispatch, type SetStateAction, useRef, useEffect } from "react";
 import debounce from "@/lib/debounce";
 import ReactGA from "react-ga4";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SnowConfigs {
   showSnow: boolean;
@@ -49,23 +54,30 @@ export default function SnowConfigButton({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          size="icon"
-          onClick={handleClick}
-          className={cn(
-            "fixed z-1 left-6 bottom-22 transition-colors bg-background rounded-full shadow-sm p-6 hover:bg-blue-100 hover:text-blue-500",
-            {
-              "text-blue-500": showSnow,
-              "text-foreground/20": !showSnow,
-            },
-            className
-          )}
-        >
-          <Snowflake className="size-6" />
-        </Button>
-      </PopoverTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <PopoverTrigger asChild>
+            <Button
+              type="button"
+              size="icon"
+              onClick={handleClick}
+              className={cn(
+                "fixed z-1 left-6 bottom-22 transition-colors bg-background rounded-full shadow-sm p-6 hover:bg-blue-100 hover:text-blue-500",
+                {
+                  "text-blue-500": showSnow,
+                  "text-foreground/20": !showSnow,
+                },
+                className
+              )}
+            >
+              <Snowflake className="size-6" />
+            </Button>
+          </PopoverTrigger>
+        </TooltipTrigger>
+        <TooltipContent>
+          눈 내리기
+        </TooltipContent>
+      </Tooltip>
       <PopoverContent className="w-64 ml-4 mb-2 p-4 flex flex-col gap-5">
         <div className="flex items-center justify-between">
           <label

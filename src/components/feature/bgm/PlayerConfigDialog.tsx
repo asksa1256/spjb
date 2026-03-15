@@ -79,8 +79,6 @@ export default function PlayerConfigDialog({
       ...tempPlaylist,
       { title: "", video_id: "", video_url: "" },
     ]);
-
-    // 맨 밑으로 스크롤 이동
   };
 
   const handleRemoveItem = (targetIdx: number) => {
@@ -90,12 +88,12 @@ export default function PlayerConfigDialog({
   const handleUpdateItem = (
     i: number,
     field: keyof PlaylistItem,
-    value: string
+    value: string,
   ) => {
     setTempPlaylist((prev) =>
       prev.map((item, index) =>
-        index === i ? { ...item, [field]: value } : item
-      )
+        index === i ? { ...item, [field]: value } : item,
+      ),
     );
   };
 
@@ -124,7 +122,7 @@ export default function PlayerConfigDialog({
       {
         onConflict: "title,url",
         ignoreDuplicates: true,
-      }
+      },
     );
 
     onClose();

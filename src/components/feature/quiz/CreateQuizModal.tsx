@@ -19,8 +19,10 @@ import { Plus } from "lucide-react";
 import { quizFormSchema, type QuizFormValues } from "@/types/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
+import { useState } from "react";
 
 const CreateQuizModal = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
   const {
@@ -30,6 +32,7 @@ const CreateQuizModal = () => {
     reset,
   } = useForm<QuizFormValues>({
     resolver: zodResolver(quizFormSchema),
+    shouldFocusError: false,
     defaultValues: {
       category: "",
       question: "",
@@ -72,13 +75,19 @@ const CreateQuizModal = () => {
     }
   };
 
+  const handleClose = () => {
+    setIsOpen(false);
+    reset();
+  };
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button
           variant="outline"
           size="lg"
           className="z-1 w-auto mx-auto hover:bg-blue-50 hover:border-blue-300 hover:text-blue-500 dark:hover:bg-secondary dark:hover:border-gray-600"
+          onClick={() => setIsOpen(true)}
         >
           <Plus className="-mr-1" />
           문제 등록하기
@@ -110,6 +119,7 @@ const CreateQuizModal = () => {
                   <CategorySelect
                     id="category"
                     value={field.value}
+                    className={errors.category ? "border-red-500" : ""}
                     onChange={field.onChange}
                   />
                 )}
@@ -201,7 +211,7 @@ const CreateQuizModal = () => {
                 htmlFor="answer"
                 className="text-sm text-foreground font-medium"
               >
-                해설
+                해설 <span className="text-gray-400">(선택)</span>
               </label>
               <Controller
                 name="commentary"
@@ -210,8 +220,7 @@ const CreateQuizModal = () => {
                   <Textarea
                     {...field}
                     id="answer"
-                    placeholder="해설을 입력해주세요. (선택)"
-                    className={errors.answer ? "border-red-500" : ""}
+                    placeholder="해설을 입력해주세요."
                   />
                 )}
               />
@@ -220,7 +229,9 @@ const CreateQuizModal = () => {
 
           <DialogFooter className="mt-6">
             <DialogClose asChild>
-              <Button variant="outline">닫기</Button>
+              <Button variant="outline" onClick={handleClose}>
+                닫기
+              </Button>
             </DialogClose>
             <Button type="submit">
               {isSubmitting ? "추가 중..." : "추가하기"}

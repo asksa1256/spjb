@@ -17,7 +17,7 @@ const SearchContainer = () => {
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const debouncedSetKeyword = useMemo(
     () => debounce((v: string) => setDebouncedKeyword(v), 500),
-    []
+    [],
   );
   const [category, setCategory] = useState<Category | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +35,7 @@ const SearchContainer = () => {
 
   const filteredResults = useMemo(
     () => filterResults(results, debouncedKeyword),
-    [results, debouncedKeyword]
+    [results, debouncedKeyword],
   );
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,10 +63,17 @@ const SearchContainer = () => {
   const isEmpty =
     category && debouncedKeyword.length >= 2 && filteredResults.length === 0;
 
-  // 검색 결과가 1개이고 '꽁꽁' 퀴즈일 경우, 답 자동 복사
+  // 검색 결과가 1개이거나, 결과가 여러 개이더라도 모든 결과의 정답이 동일하고 '꽁꽁' 퀴즈일 경우, 답 자동 복사
   useEffect(() => {
-    if (filteredResults.length === 1 && category === "quiz_kkong") {
-      copyToClipboard(filteredResults[0].answer || "");
+    if (filteredResults.length > 0 && category === "quiz_kkong") {
+      const firstAnswer = filteredResults[0].answer;
+      // answer가 존재하고, 모든 결과의 answer가 첫 번째 결과의 answer와 동일한지 확인
+      if (
+        firstAnswer &&
+        filteredResults.every((result) => result.answer === firstAnswer)
+      ) {
+        copyToClipboard(firstAnswer);
+      }
     }
   }, [filteredResults, category]);
 
@@ -102,6 +109,7 @@ const SearchContainer = () => {
           <CategorySelect
             id="category"
             value={category || ""}
+            className="border-0 shadow-none rounded-full"
             onChange={handleChangeCategory}
           />
 
