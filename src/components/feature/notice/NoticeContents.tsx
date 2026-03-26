@@ -20,6 +20,38 @@ import { AppWindow } from "lucide-react";
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="feat-cherry-blossom">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "벚꽃 이펙트" 업데이트 (2026.03.27.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <p className="mb-4">
+            봄을 맞이하여 <b>벚꽃 이펙트</b>를 추가했습니다. 🌸
+          </p>
+
+          <hr className="mb-4" />
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) 벚꽃 이펙트 추가</h4>
+            <p>
+              화면 좌측 하단의 눈송이 버튼을 클릭하면 나타나는 설정 패널에서
+              <b> 이펙트 종류</b>를 선택할 수 있습니다.
+            </p>
+            <p>
+              <b>❄️ 눈</b>과 <b>🌸 벚꽃</b> 중 원하는 이펙트를 골라보세요!
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">
+            심플족보를 이용해주시는 분들께 항상 감사드립니다.
+            <br />
+            행복한 봄 되세요!
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="feat-popup-mode">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "팝업창 모드" 업데이트 (2026.02.22.)
