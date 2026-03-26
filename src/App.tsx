@@ -4,7 +4,7 @@ import Header from "@/components/ui/Header";
 import Footer from "./components/ui/Footer";
 import ToTopButton from "./components/ui/ToTopButton";
 import SnowConfigButton from "./components/feature/snow/SnowConfigButton";
-import { useState, lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import BGMPlayerToggleButton from "./components/feature/bgm/BGMPlayerToggleButton";
 import useLocalStorage from "./hooks/useLocalStorage";
 import ReactGA from "react-ga4";
@@ -31,6 +31,14 @@ export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
   const [showPlayer, setShowPlayer] = useLocalStorage("showPlayer", true);
+  const [snowType, setSnowType] = useLocalStorage<"snow" | "cherry">("snowType", "snow");
+  const [cherryImages, setCherryImages] = useState<HTMLImageElement[]>([]);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/cherry-blossom.png";
+    img.onload = () => setCherryImages([img]);
+  }, []);
 
   return (
     <div
@@ -44,10 +52,11 @@ export default function App() {
       {showSnow && (
         <Suspense fallback={null}>
           <SnowFall
-            color="white"
-            radius={[0.5, 5.0]}
+            color={snowType === "snow" ? "white" : undefined}
+            images={snowType === "cherry" && cherryImages.length > 0 ? cherryImages : undefined}
+            radius={snowType === "cherry" ? [8, 16] : [0.5, 5.0]}
             snowflakeCount={snowflakeCount}
-            opacity={[0.5, 1]}
+            opacity={[0.6, 1]}
           />
         </Suspense>
       )}
@@ -98,6 +107,8 @@ export default function App() {
         snowflakeCount={snowflakeCount}
         onChangeShow={setShowSnow}
         onChangeCount={(v) => setSnowflakeCount(v[0])}
+        snowType={snowType}
+        onChangeSnowType={setSnowType}
       />
 
       {/* 유저 출제 문제 */}

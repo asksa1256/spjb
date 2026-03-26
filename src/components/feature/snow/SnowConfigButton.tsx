@@ -22,6 +22,8 @@ interface SnowConfigs {
   snowflakeCount: number;
   onChangeShow: Dispatch<SetStateAction<boolean>>;
   onChangeCount: (v: number[]) => void;
+  snowType: "snow" | "cherry";
+  onChangeSnowType: (type: "snow" | "cherry") => void;
   className?: string;
 }
 
@@ -31,6 +33,8 @@ export default function SnowConfigButton({
   snowflakeCount,
   onChangeShow,
   onChangeCount,
+  snowType,
+  onChangeSnowType,
 }: SnowConfigs) {
   // 눈송이 갯수 조절 슬라이더 디바운싱
   const debouncedChangeCount = useRef(
@@ -93,12 +97,49 @@ export default function SnowConfigButton({
           />
         </div>
 
+        <div className="flex flex-col gap-2">
+          <label className="text-sm font-medium text-foreground/70">
+            이펙트 종류
+          </label>
+          <div className="flex rounded-lg overflow-hidden border border-border">
+            <button
+              type="button"
+              onClick={() => onChangeSnowType("snow")}
+              className={cn(
+                "flex-1 text-xs py-1.5 transition-colors",
+                snowType === "snow"
+                  ? "bg-blue-100 text-blue-600 font-bold"
+                  : "text-foreground/50 hover:bg-muted"
+              )}
+            >
+              ❄️ 눈
+            </button>
+            <button
+              type="button"
+              onClick={() => onChangeSnowType("cherry")}
+              className={cn(
+                "flex-1 text-xs py-1.5 transition-colors border-l border-border",
+                snowType === "cherry"
+                  ? "bg-pink-100 text-pink-500 font-bold"
+                  : "text-foreground/50 hover:bg-muted"
+              )}
+            >
+              🌸 벚꽃
+            </button>
+          </div>
+        </div>
+
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <label className="text-sm font-medium text-foreground/70">
-              눈송이 개수
+              {snowType === "cherry" ? "꽃잎" : "눈송이"} 개수
             </label>
-            <span className="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-full">
+            <span className={cn(
+              "text-xs font-bold px-2 py-0.5 rounded-full",
+              snowType === "cherry"
+                ? "text-pink-500 bg-pink-50"
+                : "text-blue-500 bg-blue-50"
+            )}>
               {snowflakeCount}개
             </span>
           </div>
