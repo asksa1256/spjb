@@ -10,13 +10,21 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import ReactGA from "react-ga4";
 
 // Lazy loaded components
-const CreateQuizModal = lazy(() => import("./components/feature/quiz/CreateQuizModal"));
-const SearchContainer = lazy(() => import("./components/feature/search/SearchContainer"));
+const CreateQuizModal = lazy(
+  () => import("./components/feature/quiz/CreateQuizModal"),
+);
+const SearchContainer = lazy(
+  () => import("./components/feature/search/SearchContainer"),
+);
 const BGMPlayer = lazy(() => import("./components/feature/bgm/BGMPlayer"));
-const UserQuestionsViewModal = lazy(() => import("./components/feature/user-questions-view/UserQuestionsViewModal"));
-const AnnouncementModal = lazy(() => import("./components/feature/notice/AnnouncementModal"));
+const UserQuestionsViewModal = lazy(
+  () =>
+    import("./components/feature/user-questions-view/UserQuestionsViewModal"),
+);
+const AnnouncementModal = lazy(
+  () => import("./components/feature/notice/AnnouncementModal"),
+);
 const SnowFall = lazy(() => import("react-snowfall"));
-
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 
@@ -31,7 +39,10 @@ export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
   const [showPlayer, setShowPlayer] = useLocalStorage("showPlayer", true);
-  const [snowType, setSnowType] = useLocalStorage<"snow" | "cherry">("snowType", "snow");
+  const [snowType, setSnowType] = useLocalStorage<"snow" | "cherry">(
+    "snowType",
+    "cherry",
+  );
   const [cherryImages, setCherryImages] = useState<HTMLImageElement[]>([]);
 
   useEffect(() => {
@@ -53,7 +64,11 @@ export default function App() {
         <Suspense fallback={null}>
           <SnowFall
             color={snowType === "snow" ? "white" : undefined}
-            images={snowType === "cherry" && cherryImages.length > 0 ? cherryImages : undefined}
+            images={
+              snowType === "cherry" && cherryImages.length > 0
+                ? cherryImages
+                : undefined
+            }
             radius={snowType === "cherry" ? [8, 16] : [0.5, 5.0]}
             snowflakeCount={snowflakeCount}
             opacity={[0.6, 1]}
@@ -61,12 +76,15 @@ export default function App() {
         </Suspense>
       )}
 
-
       <Header />
 
       <main>
         <section className="flex flex-col w-full items-center justify-start max-w-[640px]">
-          <Suspense fallback={<div className="h-20 w-full animate-pulse bg-gray-200 rounded-lg" />}>
+          <Suspense
+            fallback={
+              <div className="h-20 w-full animate-pulse bg-gray-200 rounded-lg" />
+            }
+          >
             <SearchContainer />
           </Suspense>
 
@@ -90,7 +108,6 @@ export default function App() {
           </Suspense>
         )}
       </main>
-
 
       <Footer />
 
@@ -120,7 +137,6 @@ export default function App() {
       <Suspense fallback={null}>
         <AnnouncementModal />
       </Suspense>
-
 
       {/* Vercel Analytics */}
       <Analytics />
