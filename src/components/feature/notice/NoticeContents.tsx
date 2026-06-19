@@ -20,6 +20,45 @@ import { AppWindow } from "lucide-react";
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="feat-rain-effect">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "비 내리기" 기능 업데이트 (2026.06.19.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <p className="mb-4">
+            날씨 이펙트에 <b>비 내리기</b> 기능을 추가했습니다. 🌧️
+          </p>
+
+          <hr className="mb-4" />
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) 비 내리기 이펙트 추가</h4>
+            <p>
+              화면 좌측 하단의 날씨 이펙트 버튼을 클릭하면 나타나는 설정
+              패널에서 <b>🌧️ 비</b>를 선택할 수 있습니다.
+            </p>
+            <p>
+              기존 <b>❄️ 눈</b>, <b>🌸 벚꽃</b>과 함께 원하는 이펙트를
+              골라보세요!
+            </p>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">2) 비 내리는 속도 조절 추가</h4>
+            <p>
+              비 이펙트를 선택하면 <b>빗방울 개수</b>와 함께
+              <b> 비 내리는 속도</b>를 슬라이더로 조절할 수 있습니다.
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">
+            심플족보를 이용해주시는 분들께 항상 감사드립니다.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="feat-csv-download">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "족보 다운로드" 업데이트 (2026.04.06.)
