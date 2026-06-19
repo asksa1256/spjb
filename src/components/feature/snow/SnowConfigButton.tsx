@@ -5,10 +5,16 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Snowflake } from "lucide-react";
+import { CloudRain, Snowflake } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { type Dispatch, type SetStateAction, useRef, useEffect } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  useRef,
+  useEffect,
+  useState,
+} from "react";
 import debounce from "@/lib/debounce";
 import ReactGA from "react-ga4";
 import {
@@ -20,34 +26,56 @@ import {
 interface SnowConfigs {
   showSnow: boolean;
   snowflakeCount: number;
+  rainSpeed: number;
   onChangeShow: Dispatch<SetStateAction<boolean>>;
   onChangeCount: (v: number[]) => void;
-  snowType: "snow" | "cherry";
-  onChangeSnowType: (type: "snow" | "cherry") => void;
+  onChangeRainSpeed: (v: number[]) => void;
+  snowType: "snow" | "cherry" | "rain";
+  onChangeSnowType: (type: "snow" | "cherry" | "rain") => void;
   className?: string;
 }
+
+const snowCountLabels = {
+  snow: "눈송이",
+  cherry: "꽃잎",
+  rain: "빗방울",
+};
 
 export default function SnowConfigButton({
   className,
   showSnow,
   snowflakeCount,
+  rainSpeed,
   onChangeShow,
   onChangeCount,
+  onChangeRainSpeed,
   snowType,
   onChangeSnowType,
 }: SnowConfigs) {
+  const [rainSpeedDraft, setRainSpeedDraft] = useState(rainSpeed);
+
   // 눈송이 갯수 조절 슬라이더 디바운싱
   const debouncedChangeCount = useRef(
     debounce((value: number[]) => {
       onChangeCount(value);
     }, 300)
   ).current;
+  const debouncedChangeRainSpeed = useRef(
+    debounce((value: number[]) => {
+      onChangeRainSpeed(value);
+    }, 300)
+  ).current;
 
   useEffect(() => {
     return () => {
       debouncedChangeCount.cancel();
+      debouncedChangeRainSpeed.cancel();
     };
-  }, [debouncedChangeCount]);
+  }, [debouncedChangeCount, debouncedChangeRainSpeed]);
+
+  useEffect(() => {
+    setRainSpeedDraft(rainSpeed);
+  }, [rainSpeed]);
 
   // GA 이벤트 추적
   const handleClick = () => {
@@ -68,13 +96,18 @@ export default function SnowConfigButton({
               className={cn(
                 "fixed z-1 left-6 bottom-22 transition-colors bg-background rounded-full shadow-sm p-6 hover:bg-blue-100 hover:text-blue-500",
                 {
-                  "text-blue-500": showSnow,
+                  "text-blue-500": showSnow && snowType !== "rain",
+                  "text-sky-500": showSnow && snowType === "rain",
                   "text-foreground/20": !showSnow,
                 },
                 className
               )}
             >
-              <Snowflake className="size-6" />
+              {snowType === "rain" ? (
+                <CloudRain className="size-6" />
+              ) : (
+                <Snowflake className="size-6" />
+              )}
             </Button>
           </PopoverTrigger>
         </TooltipTrigger>
@@ -101,7 +134,7 @@ export default function SnowConfigButton({
           <label className="text-sm font-medium text-foreground/70">
             이펙트 종류
           </label>
-          <div className="flex rounded-lg overflow-hidden border border-border">
+          <div className="grid grid-cols-3 rounded-lg overflow-hidden border border-border">
             <button
               type="button"
               onClick={() => onChangeSnowType("snow")}
@@ -126,19 +159,33 @@ export default function SnowConfigButton({
             >
               🌸 벚꽃
             </button>
+            <button
+              type="button"
+              onClick={() => onChangeSnowType("rain")}
+              className={cn(
+                "flex-1 text-xs py-1.5 transition-colors border-l border-border",
+                snowType === "rain"
+                  ? "bg-sky-100 text-sky-600 font-bold"
+                  : "text-foreground/50 hover:bg-muted"
+              )}
+            >
+              🌧️ 비
+            </button>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center">
             <label className="text-sm font-medium text-foreground/70">
-              {snowType === "cherry" ? "꽃잎" : "눈송이"} 개수
+              {snowCountLabels[snowType]} 개수
             </label>
             <span className={cn(
               "text-xs font-bold px-2 py-0.5 rounded-full",
-              snowType === "cherry"
-                ? "text-pink-500 bg-pink-50"
-                : "text-blue-500 bg-blue-50"
+              {
+                "text-pink-500 bg-pink-50": snowType === "cherry",
+                "text-sky-600 bg-sky-50": snowType === "rain",
+                "text-blue-500 bg-blue-50": snowType === "snow",
+              }
             )}>
               {snowflakeCount}개
             </span>
@@ -151,6 +198,30 @@ export default function SnowConfigButton({
             className="w-full"
           />
         </div>
+
+        {snowType === "rain" && (
+          <div className="flex flex-col gap-3">
+            <div className="flex justify-between items-center">
+              <label className="text-sm font-medium text-foreground/70">
+                비 내리는 속도
+              </label>
+              <span className="text-xs font-bold px-2 py-0.5 rounded-full text-sky-600 bg-sky-50">
+                {rainSpeedDraft}%
+              </span>
+            </div>
+            <Slider
+              value={[rainSpeedDraft]}
+              min={10}
+              max={100}
+              step={10}
+              onValueChange={(value) => {
+                setRainSpeedDraft(value[0]);
+                debouncedChangeRainSpeed(value);
+              }}
+              className="w-full"
+            />
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );

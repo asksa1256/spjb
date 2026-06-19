@@ -28,6 +28,7 @@ const AnnouncementModal = lazy(
   () => import("./components/feature/notice/AnnouncementModal"),
 );
 const SnowFall = lazy(() => import("react-snowfall"));
+const RainFall = lazy(() => import("./components/feature/snow/RainFall"));
 
 const GA_TRACKING_ID = import.meta.env.VITE_GA_TRACKING_ID;
 
@@ -40,11 +41,12 @@ if (import.meta.env.PROD && GA_TRACKING_ID) {
 
 export default function App() {
   const [snowflakeCount, setSnowflakeCount] = useState(150);
+  const [rainSpeed, setRainSpeed] = useState(50);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
   const [showPlayer, setShowPlayer] = useLocalStorage("showPlayer", true);
-  const [snowType, setSnowType] = useLocalStorage<"snow" | "cherry">(
+  const [snowType, setSnowType] = useLocalStorage<"snow" | "cherry" | "rain">(
     "snowType",
-    "cherry",
+    "rain",
   );
   const [cherryImages, setCherryImages] = useState<HTMLImageElement[]>([]);
 
@@ -63,7 +65,7 @@ export default function App() {
       dark:bg-none
     `}
     >
-      {showSnow && (
+      {showSnow && snowType !== "rain" && (
         <Suspense fallback={null}>
           <SnowFall
             color={snowType === "snow" ? "white" : undefined}
@@ -76,6 +78,12 @@ export default function App() {
             snowflakeCount={snowflakeCount}
             opacity={[0.6, 1]}
           />
+        </Suspense>
+      )}
+
+      {showSnow && snowType === "rain" && (
+        <Suspense fallback={null}>
+          <RainFall dropCount={snowflakeCount} speed={rainSpeed} />
         </Suspense>
       )}
 
@@ -125,8 +133,10 @@ export default function App() {
       <SnowConfigButton
         showSnow={showSnow}
         snowflakeCount={snowflakeCount}
+        rainSpeed={rainSpeed}
         onChangeShow={setShowSnow}
         onChangeCount={(v) => setSnowflakeCount(v[0])}
+        onChangeRainSpeed={(v) => setRainSpeed(v[0])}
         snowType={snowType}
         onChangeSnowType={setSnowType}
       />
