@@ -37,9 +37,6 @@ const AnnouncementModal = () => {
             * 신규 문제는 심플족보의 <strong>&apos;문제 등록하기&apos;</strong> 버튼을
             통해 직접 등록하실 수 있습니다.
           </p>
-          <p>
-            * 인게임과 직접 연동된 서비스가 아니므로, <span className="underline underline-offset-3">신규 문제 일괄 업데이트는 어려운 점 양해 부탁드립니다.</span>
-          </p>
         </div>
 
         <DialogFooter className="mt-2 flex-col gap-3 sm:flex-col">
