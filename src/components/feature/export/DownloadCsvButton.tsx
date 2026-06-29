@@ -6,6 +6,15 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import supabase from "@/lib/supabase";
 import { buildCsvString } from "@/lib/exportToCsv";
@@ -26,8 +35,9 @@ interface Props {
 
 export default function DownloadCsvButton({ className }: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  const handleClick = async () => {
+  const handleDownload = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
@@ -67,29 +77,57 @@ export default function DownloadCsvButton({ className }: Props) {
     }
   };
 
+  const handleConfirm = () => {
+    setIsConfirmOpen(false);
+    void handleDownload();
+  };
+
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          onClick={handleClick}
-          disabled={isLoading}
-          className={cn(
-            "fixed left-6 bottom-36 p-6 shadow-sm rounded-full bg-background text-foreground transition-colors duration-300",
-            className,
-          )}
-        >
-          {isLoading ? (
-            <Loader2 className="size-5 animate-spin" />
-          ) : (
-            <Download className="size-5" />
-          )}
-          <span className="sr-only">족보 다운로드</span>
-        </Button>
-      </TooltipTrigger>
-      <TooltipContent>족보 다운로드</TooltipContent>
-    </Tooltip>
+    <>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsConfirmOpen(true)}
+            disabled={isLoading}
+            className={cn(
+              "fixed left-6 bottom-36 p-6 shadow-sm rounded-full bg-background text-foreground transition-colors duration-300",
+              className,
+            )}
+          >
+            {isLoading ? (
+              <Loader2 className="size-5 animate-spin" />
+            ) : (
+              <Download className="size-5" />
+            )}
+            <span className="sr-only">족보 다운로드</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>족보 다운로드</TooltipContent>
+      </Tooltip>
+
+      <Dialog open={isConfirmOpen} onOpenChange={setIsConfirmOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>족보 다운로드</DialogTitle>
+            <DialogDescription>
+              족보 파일을 다운로드 하시겠습니까?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-2">
+            <DialogClose asChild>
+              <Button type="button" variant="outline">
+                취소
+              </Button>
+            </DialogClose>
+            <Button type="button" onClick={handleConfirm}>
+              예
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
