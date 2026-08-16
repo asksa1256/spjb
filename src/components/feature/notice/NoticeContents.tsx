@@ -20,6 +20,34 @@ import { AppWindow } from "lucide-react";
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="feat-discord-link">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "디스코드 채널" 버튼 추가 (2026.08.17.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
+          <p className="mb-4">
+            심플족보 헤더에 <b>디스코드</b> 버튼이 추가되었습니다.
+          </p>
+
+          <p className="mb-4">
+            우측 상단의 디스코드 아이콘을 클릭하면 심플족보 디스코드 서버로
+            이동됩니다.
+          </p>
+
+          <p className="mb-4">
+            현재 큐플레이 유저분들이 자유롭게 소통 가능한 <b>'자유채팅'</b> 채널과, 길드를 홍보 및 확인할 수 있는 <b>'길드홍보'</b> 채널을 이용하실 수 있습니다.
+          </p>
+
+          <p className="mb-4">
+            심플족보 디스코드에서는 추후 사이트에서 제공되지 않는 추가 컨텐츠가 제공될 예정입니다.
+          </p>
+
+          <hr className="my-4" />
+
+          <p className="text-sm">감사합니다.</p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="feat-rain-effect">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "비 내리기" 기능 업데이트 (2026.06.19.)
