@@ -5,6 +5,7 @@ import DarkModeToggleButton from "@/components/feature/darkmode/DarkModeToggleBu
 import GuildsModal from "@/components/feature/guilds/GuildsModal";
 import NoticeModal from "@/components/feature/notice/NoticeModal";
 import PopupModeButton from "@/components/feature/popup/PopupModeButton";
+import DiscordLinkButton from "@/components/feature/discord/DiscordLinkButton";
 
 const Header = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -51,6 +52,7 @@ const Header = () => {
           <NoticeModal />
           <PopupModeButton />
           <DarkModeToggleButton />
+          <DiscordLinkButton />
         </div>
       </div>
     </header>
