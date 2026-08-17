@@ -5,6 +5,16 @@ export const CATEGORY = {
   GARO: "garo",
 };
 
+export const INQUIRY_CATEGORIES = [
+  "OX/XO",
+  "꼬로록/올라",
+  "꽁꽁",
+  "가로세로",
+  "에러",
+  "건의",
+  "기타",
+] as const;
+
 export const NOTICE_VERSION = "2026-08-17";
 export const NOTICE_STORAGE_KEY = "lastCheckedNoticeVersion";
 
