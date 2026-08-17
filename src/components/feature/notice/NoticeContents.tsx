@@ -26,7 +26,14 @@ const NoticeContents = () => {
         </AccordionTrigger>
         <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
           <p className="mb-4">
-            심플족보 헤더에 <b>디스코드</b> 버튼이 추가되었습니다.
+            심플족보에 <b>디스코드</b> 버튼
+            <img
+              src="/discord-icon.png"
+              alt=""
+              aria-hidden="true"
+              className="size-5 object-contain inline-block align-text-bottom mx-1"
+            />
+            이 추가되었습니다.
           </p>
 
           <p className="mb-4">
