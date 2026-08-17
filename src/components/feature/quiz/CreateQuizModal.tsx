@@ -147,7 +147,7 @@ const CreateQuizModal = () => {
                     {...field}
                     id="question"
                     placeholder="문제를 입력해주세요."
-                    className={errors.question ? "border-red-500" : ""}
+                    className={`text-sm ${errors.question ? "border-red-500" : ""}`}
                   />
                 )}
               />
@@ -174,7 +174,7 @@ const CreateQuizModal = () => {
                     {...field}
                     id="answer"
                     placeholder="답을 입력해주세요."
-                    className={errors.answer ? "border-red-500" : ""}
+                    className={`text-sm ${errors.answer ? "border-red-500" : ""}`}
                   />
                 )}
               />
@@ -208,7 +208,7 @@ const CreateQuizModal = () => {
             {/* 해설 */}
             <div className="grid gap-3">
               <label
-                htmlFor="answer"
+                htmlFor="commentary"
                 className="text-sm text-foreground font-medium"
               >
                 해설 <span className="text-gray-400">(선택)</span>
@@ -219,8 +219,9 @@ const CreateQuizModal = () => {
                 render={({ field }) => (
                   <Textarea
                     {...field}
-                    id="answer"
+                    id="commentary"
                     placeholder="해설을 입력해주세요."
+                    className="text-sm"
                   />
                 )}
               />
