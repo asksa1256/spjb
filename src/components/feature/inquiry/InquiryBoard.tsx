@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CheckCircle2, ChevronLeft, ChevronRight, CircleDashed, Eye, EyeOff, Pencil, Trash2 } from "lucide-react";
+import { CheckCircle2, ChevronLeft, ChevronRight, CircleDashed, Eye, EyeOff, Pencil, Search, Trash2, X } from "lucide-react";
 import { toast } from "sonner";
 import { INQUIRY_CATEGORIES } from "@/constants";
 import supabase from "@/lib/supabase";
@@ -32,6 +32,8 @@ const InquiryBoard = ({ refreshKey }: { refreshKey: number }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const boardRef = useRef<HTMLDivElement>(null);
 
   const loadInquiries = useCallback(async () => {
@@ -39,6 +41,7 @@ const InquiryBoard = ({ refreshKey }: { refreshKey: number }) => {
     const { data, error } = await supabase.rpc("get_public_inquiries", {
       p_limit: PAGE_SIZE,
       p_offset: (page - 1) * PAGE_SIZE,
+      p_search: debouncedSearchTerm.trim() || null,
     });
     if (error) toast.error(`문의내역을 불러오지 못했습니다: ${error.message}`);
     else {
@@ -47,7 +50,16 @@ const InquiryBoard = ({ refreshKey }: { refreshKey: number }) => {
       setTotalCount(Number(inquiries[0]?.total_count ?? 0));
     }
     setIsLoading(false);
-  }, [page]);
+  }, [debouncedSearchTerm, page]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => setDebouncedSearchTerm(searchTerm), 300);
+    return () => window.clearTimeout(timeoutId);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearchTerm]);
 
   useEffect(() => {
     void loadInquiries();
@@ -125,11 +137,20 @@ const InquiryBoard = ({ refreshKey }: { refreshKey: number }) => {
 
   return (
     <div ref={boardRef} className="flex min-h-[70dvh] min-w-0 max-w-full flex-col pr-1">
+      <div className="relative mb-3 shrink-0">
+        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+        <Input type="search" name="inquiry-history-search" autoComplete="off" placeholder="문의 내용 검색" value={searchTerm} onChange={(event) => setSearchTerm(event.target.value)} className="px-9 text-sm" />
+        {searchTerm && (
+          <button type="button" className="absolute right-0 top-0 flex size-9 items-center justify-center text-muted-foreground hover:text-foreground" aria-label="문의 검색어 지우기" onClick={() => setSearchTerm("")}>
+            <X className="size-4" />
+          </button>
+        )}
+      </div>
       <div className="flex-1 space-y-3">
       {isLoading ? (
         <p className="py-12 text-center text-sm text-muted-foreground">불러오는 중...</p>
       ) : items.length === 0 ? (
-        <p className="py-12 text-center text-sm text-muted-foreground">등록된 문의가 없습니다.</p>
+        <p className="py-12 text-center text-sm text-muted-foreground">{debouncedSearchTerm.trim() ? "검색 결과가 없습니다." : "등록된 문의가 없습니다."}</p>
       ) : (
         items.map((item) => {
         const isEditing = editingId === item.id;
