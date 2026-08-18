@@ -117,6 +117,13 @@ const SearchContainer = () => {
             <div className="flex gap-2">
               <Input
                 ref={inputRef}
+                id="quiz-keyword-search"
+                name="quiz-keyword-search"
+                type="search"
+                autoComplete="off"
+                data-1p-ignore
+                data-lpignore="true"
+                data-form-type="other"
                 value={keyword}
                 placeholder="🔍 2글자 이상 입력..."
                 className="border-none shadow-none rounded-full w-full focus-visible:ring-blue-200"
