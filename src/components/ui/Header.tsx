@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CreateInquiryModal from "@/components/feature/inquiry/CreateInquiryModal";
 import ContributorsModal from "@/components/feature/contributor-view/ContributorsModal";
 import DarkModeToggleButton from "@/components/feature/darkmode/DarkModeToggleButton";
-import GuildsModal from "@/components/feature/guilds/GuildsModal";
+// import GuildsModal from "@/components/feature/guilds/GuildsModal";
 import NoticeModal from "@/components/feature/notice/NoticeModal";
 import PopupModeButton from "@/components/feature/popup/PopupModeButton";
 import DiscordLinkButton from "@/components/feature/discord/DiscordLinkButton";
@@ -48,7 +48,7 @@ const Header = () => {
         <div className="flex">
           <CreateInquiryModal />
           <ContributorsModal />
-          <GuildsModal />
+          {/* <GuildsModal /> */}
           <NoticeModal />
           <PopupModeButton />
           <DarkModeToggleButton />
