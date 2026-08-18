@@ -15,7 +15,7 @@ export const INQUIRY_CATEGORIES = [
   "기타",
 ] as const;
 
-export const NOTICE_VERSION = "2026-08-17";
+export const NOTICE_VERSION = "2026-08-18";
 export const NOTICE_STORAGE_KEY = "lastCheckedNoticeVersion";
 
 export const PLAYLIST_STORAGE_KEY = "bgm_playlist";

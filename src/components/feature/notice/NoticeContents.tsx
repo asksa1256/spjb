@@ -20,6 +20,49 @@ import { AppWindow } from "lucide-react";
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="feat-inquiry-history">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          "문의내역" 기능 업데이트 (2026.08.18.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 rounded-md bg-secondary p-4 text-sm text-foreground">
+          <p className="mb-4">
+            기존의 '문의하기' 기능에 <b>문의내역</b>이 추가되었습니다.<br/>
+            이제 등록된 문의와 처리 상태를 함께 확인할 수 있습니다.
+          </p>
+
+          <hr className="mb-4" />
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">1) '문의내역' 추가 </h4>
+            <p>
+              심플족보에 등록된 문의들을 조회할 수 있습니다.<br/>
+              기존 문의사항들을 확인하고, 중복 문의를 방지할 수 있습니다.
+            </p>
+            <p className="text-foreground/60">
+              ※ 입력하신 연락처는 공개되지 않습니다.
+            </p>
+          </section>
+
+          <section className="mb-6 flex flex-col gap-2">
+            <h4 className="font-bold">2) 문의 수정 및 삭제</h4>
+            <p>
+              문의 등록 시 설정한 비밀번호로 작성하신 문의를
+              수정 및 삭제할 수 있습니다.
+            </p>
+            <p className="flex gap-1 text-foreground/60">
+              ※ 비밀번호는 복구할 수 없습니다.
+            </p>
+          </section>
+
+          <hr />
+
+          <p className="mt-6 text-sm">
+            감사합니다.
+          </p>
+        </AccordionContent>
+      </AccordionItem>
+
+
       <AccordionItem value="feat-discord-link">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "디스코드 채널" 버튼 추가 (2026.08.17.)
