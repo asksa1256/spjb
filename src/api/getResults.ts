@@ -1,7 +1,7 @@
 import supabase from "@/lib/supabase";
-import type { TableNames } from "@/types";
+import type { Category } from "@/types";
 
-const getResults = async (ctg: TableNames) => {
+const getResults = async (ctg: Category) => {
   const { count } = await supabase
     .from(ctg)
     .select("*", { count: "exact", head: true });

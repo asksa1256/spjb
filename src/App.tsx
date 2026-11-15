@@ -40,6 +40,8 @@ if (import.meta.env.PROD && GA_TRACKING_ID) {
 }
 
 export default function App() {
+  const [hasNoRegisteredQuestions, setHasNoRegisteredQuestions] =
+    useState(false);
   const [snowflakeCount, setSnowflakeCount] = useState(150);
   const [rainSpeed, setRainSpeed] = useState(50);
   const [showSnow, setShowSnow] = useLocalStorage("showSnow", true);
@@ -94,7 +96,9 @@ export default function App() {
               <div className="h-20 w-full animate-pulse bg-gray-200 rounded-lg" />
             }
           >
-            <SearchContainer />
+            <SearchContainer
+              onEmptyResultsChange={setHasNoRegisteredQuestions}
+            />
           </Suspense>
 
           <Toaster
@@ -106,7 +110,9 @@ export default function App() {
           />
 
           <Suspense fallback={null}>
-            <CreateQuizModal />
+            <CreateQuizModal
+              hasNoRegisteredQuestions={hasNoRegisteredQuestions}
+            />
           </Suspense>
         </section>
 

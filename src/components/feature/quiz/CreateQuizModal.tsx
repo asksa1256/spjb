@@ -21,7 +21,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { useState } from "react";
 
-const CreateQuizModal = () => {
+interface CreateQuizModalProps {
+  hasNoRegisteredQuestions: boolean;
+}
+
+const CreateQuizModal = ({
+  hasNoRegisteredQuestions,
+}: CreateQuizModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -60,6 +66,10 @@ const CreateQuizModal = () => {
           toast.error("이미 등록된 문제입니다.");
           return;
         }
+
+        console.error("문제 등록 실패:", error);
+        toast.error(`문제 추가 실패: ${error.message}`);
+        return;
       }
 
       toast.success("문제가 성공적으로 추가되었습니다!");
@@ -82,6 +92,11 @@ const CreateQuizModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      {hasNoRegisteredQuestions && (
+        <p className="mb-2 text-center text-xs text-gray-500">
+          등록된 문제가 없습니다. 새 문제를 등록해주세요!
+        </p>
+      )}
       <DialogTrigger asChild>
         <Button
           variant="outline"

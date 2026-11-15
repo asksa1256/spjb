@@ -32,6 +32,10 @@ const CategorySelect = ({
           <SelectItem value="quiz_kkororok">꼬로록/올라</SelectItem>
           <SelectItem value="quiz_kkong">꽁꽁</SelectItem>
           <SelectItem value="quiz_garo">가로세로</SelectItem>
+          <SelectItem value="quiz_olla2">올라올라2</SelectItem>
+          <SelectItem value="quiz_europe">유럽여행</SelectItem>
+          <SelectItem value="quiz_kongkong">퀴즈콩콩</SelectItem>
+          <SelectItem value="quiz_bingo">빙고빙고</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

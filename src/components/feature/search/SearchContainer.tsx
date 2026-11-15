@@ -10,9 +10,12 @@ import LoadingDots from "@/components/ui/LoadingDots";
 import { copyToClipboard } from "@/lib/copyToClipborad";
 import filterResults from "@/lib/filterResults";
 import getResults from "@/api/getResults";
-import type { TableNames } from "@/types";
 
-const SearchContainer = () => {
+interface SearchContainerProps {
+  onEmptyResultsChange: (isEmpty: boolean) => void;
+}
+
+const SearchContainer = ({ onEmptyResultsChange }: SearchContainerProps) => {
   const [keyword, setKeyword] = useState("");
   const [debouncedKeyword, setDebouncedKeyword] = useState("");
   const debouncedSetKeyword = useMemo(
@@ -24,7 +27,7 @@ const SearchContainer = () => {
 
   const { data, isPending, error } = useQuery({
     queryKey: ["quiz", category],
-    queryFn: () => getResults(category as TableNames),
+    queryFn: () => getResults(category as Category),
     enabled: !!category,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
@@ -32,6 +35,18 @@ const SearchContainer = () => {
 
   const loadingPercent = data?.loadingPercent ?? 0;
   const results = useMemo(() => data?.allData ?? [], [data]);
+
+  useEffect(() => {
+    onEmptyResultsChange(
+      Boolean(
+        category &&
+          !isPending &&
+          !error &&
+          data &&
+          data.allData.length === 0,
+      ),
+    );
+  }, [category, data, error, isPending, onEmptyResultsChange]);
 
   const filteredResults = useMemo(
     () => filterResults(results, debouncedKeyword),
