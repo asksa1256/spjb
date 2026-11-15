@@ -17,9 +17,23 @@ import CommentaryImg from "@/assets/images/commentary.png";
 import BGMConfigButtonImg from "@/assets/images/bgm-config-btn.png";
 import { AppWindow } from "lucide-react";
 
-const NoticeContents = () => {
+interface NoticeContentsProps {
+  activeNotice: string;
+  onActiveNoticeChange: (value: string) => void;
+}
+
+const NoticeContents = ({
+  activeNotice,
+  onActiveNoticeChange,
+}: NoticeContentsProps) => {
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion
+      type="single"
+      collapsible
+      className="w-full"
+      value={activeNotice}
+      onValueChange={onActiveNoticeChange}
+    >
       <AccordionItem value="notice-operation-cost">
         <AccordionTrigger className="text-base font-medium text-foreground">
           심플족보 운영 관련 안내 (2026.11.15.)

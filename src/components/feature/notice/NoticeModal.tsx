@@ -10,7 +10,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Megaphone } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -18,11 +18,34 @@ import {
 } from "@/components/ui/tooltip";
 import NoticeContents from "./NoticeContents";
 import useLocalStorage from "@/hooks/useLocalStorage";
-import { NOTICE_STORAGE_KEY, NOTICE_VERSION } from "@/constants";
+import {
+  NOTICE_STORAGE_KEY,
+  NOTICE_VERSION,
+  OPEN_OPERATIONS_NOTICE_EVENT,
+} from "@/constants";
 import ReactGA from "react-ga4";
 
 const NoticeModal = () => {
   const [open, setOpen] = useState(false);
+  const [activeNotice, setActiveNotice] = useState("");
+
+  useEffect(() => {
+    const handleOpenOperationsNotice = () => {
+      setActiveNotice("notice-operation-cost");
+      setOpen(true);
+    };
+
+    window.addEventListener(
+      OPEN_OPERATIONS_NOTICE_EVENT,
+      handleOpenOperationsNotice,
+    );
+    return () => {
+      window.removeEventListener(
+        OPEN_OPERATIONS_NOTICE_EVENT,
+        handleOpenOperationsNotice,
+      );
+    };
+  }, []);
 
   // GA 이벤트 추적
   const handleNoticeClick = () => {
@@ -73,7 +96,10 @@ const NoticeModal = () => {
           <DialogDescription className="text-xs"></DialogDescription>
         </DialogHeader>
 
-        <NoticeContents />
+        <NoticeContents
+          activeNotice={activeNotice}
+          onActiveNoticeChange={setActiveNotice}
+        />
 
         <DialogFooter className="mt-6">
           <DialogClose asChild>

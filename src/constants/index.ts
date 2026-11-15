@@ -17,10 +17,13 @@ export const INQUIRY_CATEGORIES = [
 
 export const NOTICE_VERSION = "2026-11-15-2";
 export const NOTICE_STORAGE_KEY = "lastCheckedNoticeVersion";
+export const OPEN_OPERATIONS_NOTICE_EVENT = "spjb:open-operations-notice";
+export const ANNOUNCEMENT_SEEN_KEY = "lastSeenAnnouncementVersion";
+export const ANNOUNCEMENT_VERSION = "service-ending-2026-11";
 
 export const PLAYLIST_STORAGE_KEY = "bgm_playlist";
 
-export const NOTICE_MODAL_HIDDEN_KEY = "hideWelcomeModal";
+export const NOTICE_MODAL_HIDDEN_KEY = "hideAnnouncementDate";
 
 export const SIMILAR_CHARS: Record<string, string> = {
   o: "[oO0○]",
