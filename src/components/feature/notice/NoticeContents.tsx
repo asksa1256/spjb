@@ -20,13 +20,40 @@ import { AppWindow } from "lucide-react";
 const NoticeContents = () => {
   return (
     <Accordion type="single" collapsible className="w-full">
+      <AccordionItem value="notice-operation-cost">
+        <AccordionTrigger className="text-base font-medium text-foreground">
+          심플족보 운영 관련 안내 (2026.11.15.)
+        </AccordionTrigger>
+        <AccordionContent className="mb-4 rounded-md bg-secondary p-4 text-sm text-foreground">
+          <p className="mb-4">안녕하세요. 심플족보입니다.</p>
+
+          <p className="mb-4">
+            심플족보 운영을 시작한 지 어느덧 1년이 되어갑니다. 최근
+            &apos;큐플레이 플러스&apos; 오픈 이후 하루 방문자 수가 400~500명에
+            이르면서 서버 비용이 크게 증가했습니다. 현재 월 약 5만 원의 서버
+            비용이 발생하고 있습니다.
+          </p>
+
+          <p className="mb-4">
+            수익 없이 서비스를 계속 운영하기 어렵고, 유저분들도 족보를 유료로 사용하시기엔 부담스러울 것이라 판단하여 부득이하게 심플족보 운영을&nbsp;
+            <b>2026년 11월 20일까지</b> 진행하고,&nbsp;
+            <b>2026년 11월 21일부로 서비스를 종료</b>하기로 결정했습니다.
+            갑작스럽게 서비스 종료 소식을 전해드리게 되어 죄송합니다.
+          </p>
+
+          <hr className="mb-4" />
+
+          <p>그동안 심플족보를 이용해주셔서 진심으로 감사드립니다.</p>
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="feat-inquiry-history">
         <AccordionTrigger className="text-base font-medium text-foreground">
           "문의내역" 기능 업데이트 (2026.08.18.)
         </AccordionTrigger>
         <AccordionContent className="mb-4 rounded-md bg-secondary p-4 text-sm text-foreground">
           <p className="mb-4">
-            기존의 '문의하기' 기능에 <b>문의내역</b>이 추가되었습니다.<br/>
+            기존의 '문의하기' 기능에 <b>문의내역</b>이 추가되었습니다.<br />
             이제 등록된 문의와 처리 상태를 함께 확인할 수 있습니다.
           </p>
 
@@ -35,7 +62,7 @@ const NoticeContents = () => {
           <section className="mb-6 flex flex-col gap-2">
             <h4 className="font-bold">1) '문의내역' 추가 </h4>
             <p>
-              심플족보에 등록된 문의들을 조회할 수 있습니다.<br/>
+              심플족보에 등록된 문의들을 조회할 수 있습니다.<br />
               기존 문의사항들을 확인하고, 중복 문의를 방지할 수 있습니다.
             </p>
             <p className="text-foreground/60">
@@ -144,9 +171,9 @@ const NoticeContents = () => {
         <AccordionContent className="mb-4 text-sm text-foreground bg-secondary p-4 rounded-md">
           <p className="mb-4">
             심플족보에 등록된 족보를 CSV 파일로 다운로드하실 수 있습니다.
-            <br/>
+            <br />
             해당 파일로 <b>오프라인에서도 퀴즈별 문제와 답 검색</b>이 가능합니다.
-            <br/>
+            <br />
             <span className="text-gray-500 text-xs leading-none">* 오프라인 데이터는 다운로드 시점 이후로 새 데이터가 반영되지 않습니다. 최신 퀴즈 데이터를 받으시려면 심플족보 접속 후 새 파일을 다운로드해주세요.</span>
           </p>
 

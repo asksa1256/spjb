@@ -99,7 +99,7 @@ const ContributorsModal = () => {
               👇 심플족보의 첫번째 기여자 되기 👇
             </p>
             <Suspense fallback={null}>
-              <CreateQuizModal />
+              <CreateQuizModal hasNoRegisteredQuestions={false} />
             </Suspense>
           </div>
 
